@@ -42,7 +42,7 @@ class Product extends Model
         return $this->hasMany(Inquiry::class);
     }
 
- 
+    
 
 
     public function category(): BelongsTo

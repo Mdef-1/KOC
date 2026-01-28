@@ -15,12 +15,35 @@
         </div>
     @endif
 
-    {{-- Search --}}
-    <div class="mb-6">
-        <input wire:model.live.debounce.300ms="search"
-            type="text"
-            placeholder="Search by product name..."
-            class="w-full sm:w-80 px-4 py-2 border rounded-md focus:ring-blue-500 focus:border-blue-500">
+    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 space-y-4 sm:space-y-0">
+        <div class="relative w-full sm:w-96 group">
+            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <svg class="h-5 w-5 text-gray-400 group-focus-within:text-blue-500 transition-colors" fill="none"
+                    stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+            </div>
+
+            <input wire:model.live.debounce.300ms="search" type="text" placeholder="Search by product name.."
+                class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all">
+
+            @if($search)
+                <button wire:click="$set('search', '')"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                    title="Clear search">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            @endif
+        </div>
+
+        <div class="flex items-center space-x-2 text-sm text-gray-500">
+            @if($search)
+                <span>Showing results for "<span class="font-medium text-gray-900">{{ $search }}</span>"</span>
+            @endif
+        </div>
     </div>
 
     {{-- Gallery Grid --}}

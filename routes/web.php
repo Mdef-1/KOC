@@ -5,6 +5,7 @@ use App\Livewire\Admin\ProductTable;
 use App\Livewire\Admin\InquiryTable;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Admin\ProductGallery;
+use App\Livewire\StockTransactionTable;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\InventoryTable;
 use App\Livewire\Admin\UserTable;
@@ -18,6 +19,7 @@ Route::get('/', function () {
 Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+    Volt::route('product_gallery', ProductGallery::class)->name('admin.product_gallery.index');
 
 Route::middleware(['auth'])->group(function () {
     Route::redirect('settings', 'settings/profile');
@@ -31,6 +33,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('inquiries', InquiryTable::class)->name('admin.inquiries.index');
     Volt::route('User', UserTable::class)->name('admin.user.index');
     Volt::route('product_gallery', ProductGallery::class)->name('admin.product_gallery.index');
+    Volt::route('stock_transaction', StockTransactionTable::class)->name('admin.stock_transaction.index');
     Volt::route('settings/two-factor', 'settings.two-factor')
 
         ->middleware(

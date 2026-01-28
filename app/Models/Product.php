@@ -26,15 +26,24 @@ class Product extends Model
         'is_active' => 'boolean',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+
     public function gallery(): HasMany
     {
         return $this->hasMany(ProductGalleryModel::class);
     }
+    
 
     public function inquiries(): HasMany
     {
         return $this->hasMany(Inquiry::class);
     }
+
+ 
+
 
     public function category(): BelongsTo
     {

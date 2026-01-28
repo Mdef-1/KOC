@@ -23,6 +23,7 @@
                     <flux:navlist.item icon="book-open-text" :href="route('admin.categories.index')" :current="request()->routeIs('admin.categories.*')" wire:navigate>Categories</flux:navlist.item>
                     <flux:navlist.item icon="layout-grid" :href="route('admin.inquiries.index')" :current="request()->routeIs('admin.inquiries.*')" wire:navigate>Inquiries</flux:navlist.item>
                     <flux:navlist.item icon="layout-grid" :href="route('admin.product_gallery.index')" :current="request()->routeIs('admin.product_gallery.*')" wire:navigate>Product Gallery</flux:navlist.item>                    
+                    <flux:navlist.item icon="layout-grid" :href="route('admin.stock_transaction.index')" :current="request()->routeIs('admin.stock_transaction.*')" wire:navigate>Stock Transaction</flux:navlist.item>                    
                 </flux:navlist.group>
             </flux:navlist>
 

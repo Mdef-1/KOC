@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Product;
 use App\Models\ProductGallery;
+use App\Models\ProductGalleryModel;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -30,7 +31,7 @@ class ProductGallerySeeder extends Seeder
             $imageCount = rand(1, 3);
             
             for ($i = 0; $i < $imageCount; $i++) {
-                ProductGallery::create([
+                ProductGalleryModel::create([
                     'product_id' => $productId,
                     'image_url' => $faker->imageUrl(800, 600, 'products', true, 'product-' . $productId),
                     'is_primary' => $i === 0, // First image is primary

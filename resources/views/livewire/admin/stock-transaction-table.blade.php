@@ -51,18 +51,36 @@
                             </div>
                         </td>
                         <td class="px-6 py-4">
-                            <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $trx->type == 'in' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800' }}">
+                            <span
+                                class="px-2 py-1 text-xs font-semibold rounded-full {{ $trx->type == 'in' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800' }}">
                                 {{ strtoupper($trx->type) }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-right font-bold {{ $trx->type == 'in' ? 'text-green-600' : 'text-red-600' }}">
+                        <td
+                            class="px-6 py-4 text-right font-bold {{ $trx->type == 'in' ? 'text-green-600' : 'text-red-600' }}">
                             {{ $trx->type == 'in' ? '+' : '-' }}{{ number_format($trx->quantity) }}
                         </td>
                         <td class="px-6 py-4 text-sm text-gray-500 italic">
                             {{ $trx->description ?? '-' }}
                         </td>
-                        <td class="px-6 py-4 text-right text-sm font-medium">
-                            <button wire:click="edit({{ $trx->id }})" class="text-indigo-600 hover:text-indigo-900 mr-2">Edit</button>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
+                            @if($trx->trashed())
+                                {{-- Tombol Restore untuk data yang sudah dihapus --}}
+                                <button wire:click="restore({{ $trx->id }})"
+                                    class="text-green-600 hover:text-green-900 bg-green-50 px-3 py-1 rounded border border-green-200 transition">
+                                    <i class="fas fa-undo mr-1"></i> Restore
+                                </button>
+                            @else
+                                {{-- Tombol Edit & Delete untuk data aktif --}}
+                                <button wire:click="edit({{ $trx->id }})" class="text-indigo-600 hover:text-indigo-900">
+                                    Edit
+                                </button>
+                                <button wire:click="delete({{ $trx->id }})"
+                                    onclick="confirm('Pindahkan transaksi ini ke tempat sampah?') || event.stopImmediatePropagation()"
+                                    class="text-red-600 hover:text-red-900">
+                                    Delete
+                                </button>
+                            @endif
                         </td>
                     </tr>
                 @empty
@@ -80,8 +98,9 @@
     @if($isOpen)
         <div class="fixed inset-0 z-50 overflow-y-auto">
             <div class="flex items-center justify-center min-h-screen px-4">
-                <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.5);" wire:click="$set('isOpen', false)"></div>
-                
+                <div class="fixed inset-0 transition-opacity" style="background-color: rgba(0, 0, 0, 0.5);"
+                    wire:click="$set('isOpen', false)"></div>
+
                 <div class="relative bg-white rounded-lg shadow-xl max-w-2xl w-full p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">
                         {{ $selected_id ? 'Edit' : 'Record' }} Stock Movement
@@ -90,8 +109,10 @@
                     <form wire:submit.prevent="store">
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
                             <div class="sm:col-span-2">
-                                <label class="block text-sm font-medium text-gray-700">Inventory Item <span class="text-red-500">*</span></label>
-                                <select wire:model.defer="inventory_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                                <label class="block text-sm font-medium text-gray-700">Inventory Item <span
+                                        class="text-red-500">*</span></label>
+                                <select wire:model.defer="inventory_id"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
                                     <option value="">-- Select SKU / Product --</option>
                                     @foreach($inventory_items as $item)
                                         <option value="{{ $item->id }}">
@@ -104,7 +125,8 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Type</label>
-                                <select wire:model.defer="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <select wire:model.defer="type"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     <option value="in">Stock In (+)</option>
                                     <option value="out">Stock Out (-)</option>
                                 </select>
@@ -112,20 +134,25 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                                <input type="number" wire:model.defer="quantity" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <input type="number" wire:model.defer="quantity"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                                 @error('quantity') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="sm:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea wire:model.defer="description" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
+                                <textarea wire:model.defer="description" rows="3"
+                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
                                 @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
                         <div class="mt-6 flex justify-end space-x-3">
-                            <button type="button" wire:click="$set('isOpen', false)" class="bg-white border border-gray-300 px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
-                            <button type="submit" class="bg-blue-600 px-4 py-2 rounded-md text-sm text-white hover:bg-blue-700">Save Transaction</button>
+                            <button type="button" wire:click="$set('isOpen', false)"
+                                class="bg-white border border-gray-300 px-4 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50">Cancel</button>
+                            <button type="submit"
+                                class="bg-blue-600 px-4 py-2 rounded-md text-sm text-white hover:bg-blue-700">Save
+                                Transaction</button>
                         </div>
                     </form>
                 </div>

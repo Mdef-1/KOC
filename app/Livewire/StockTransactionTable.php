@@ -18,6 +18,20 @@ class StockTransactionTable extends Component
     public $perPage = 10;
     public $search = '';
 
+
+    // Logic Hapus (Soft Delete)
+    public function delete($id)
+    {
+        StockTransaction::findOrFail($id)->delete();
+        session()->flash('message', 'Transaksi berhasil dipindahkan ke sampah.');
+    }
+
+    // Logic Restore (Mengembalikan data)
+    public function restore($id)
+    {
+        StockTransaction::withTrashed()->findOrFail($id)->restore();
+        session()->flash('message', 'Transaksi berhasil dikembalikan.');
+    }
     public function updatingSearch()
     {
         $this->resetPage();
@@ -93,7 +107,7 @@ class StockTransactionTable extends Component
     {
         return view('livewire.admin.stock-transaction-table', [
             'transactions' => StockTransaction::with(['inventory.product'])
-                ->whereHas('inventory.product', function($q) {
+                ->whereHas('inventory.product', function ($q) {
                     $q->where('name', 'like', '%' . $this->search . '%');
                 })
                 ->latest('id')

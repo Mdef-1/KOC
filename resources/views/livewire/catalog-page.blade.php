@@ -65,11 +65,10 @@
                                         : asset('storage/products/' . $product->image_url)))
                                 : null);
                     @endphp
-                    <div wire:key="product-{{ $product->id }}" class="group cursor-pointer">
-                        <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden bg-gray-100"
-                            wire:click="openInquiry({{ $product->id }})">
+                    <div class="group cursor-pointer">
+                        <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden bg-gray-100">
                             @if($img)
-                                <img src="{{ $img }}" alt="{{ $product->image_alt ?? $product->name }}"
+                                <img wire:click src="{{ $img }}" alt="{{ $product->image_alt ?? $product->name }}"
                                     class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                     onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c2c3a3f9d%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c2c3a3f9d%22%3E%3Crect%20width%3D%22300%22%20height%3D%22400%22%20fill%3D%22%23F5F5F5%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.5%22%20y%3D%22220%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';">
                             @else
@@ -112,9 +111,17 @@
                             <div class="w-24 h-32 rounded-xl overflow-hidden bg-gray-100 shrink-0">
                                 @php
                                     $selImg = null;
-                                    if (isset($selectedProduct)) {
-                                        $g = optional($selectedProduct->gallery->first())->image_url;
-                                        $selImg = $g ? (\Illuminate\Support\Str::startsWith($g, 'http') ? $g : (\Illuminate\Support\Str::startsWith($g, 'storage/') ? asset($g) : asset('storage/' . $g))) : null;
+                                    if (isset($selectedProduct) && $selectedProduct->gallery->isNotEmpty()) {
+                                        $g = $selectedProduct->gallery->first()->image_url;
+
+                                        if (\Illuminate\Support\Str::startsWith($g, ['http://', 'https://'])) {
+                                            $selImg = $g;
+                                        } else {
+                                            // Bersihkan semua kemungkinan prefix 'storage/' atau '/' agar tidak double
+                                            $path = ltrim($g, '/');
+                                            $path = preg_replace('/^storage\//', '', $path);
+                                            $selImg = asset('storage/' . $path);
+                                        }
                                     }
                                 @endphp
                                 @if($selImg)

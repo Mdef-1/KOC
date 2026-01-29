@@ -41,6 +41,7 @@ class StockTransactionTable extends Component
     {
         $this->resetInputFields();
         $this->isOpen = true;
+        $this->dispatch('contentChanged');
     }
 
     public function store()

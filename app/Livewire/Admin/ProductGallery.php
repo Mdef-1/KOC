@@ -15,6 +15,7 @@ class ProductGallery extends Component
     use WithPagination, WithFileUploads;
 
     // Model fields
+    public $new_images = [];
     public $selected_id;
     public $product_id;
     public $image;          // upload file
@@ -30,7 +31,7 @@ class ProductGallery extends Component
     {
         return [
             'product_id' => 'required|exists:products,id',
-            'image'      => $this->selected_id
+            'image' => $this->selected_id
                 ? 'nullable|image|max:2048'
                 : 'required|image|max:2048',
             'is_primary' => 'boolean',
@@ -51,42 +52,63 @@ class ProductGallery extends Component
 
     public function store()
     {
-        $this->validate();
+        // Validasi dasar
+        $this->validate([
+            'product_id' => 'required|exists:products,id',
+            'is_primary' => 'boolean',
+            'sort_order' => 'nullable|integer|min:0',
+        ]);
 
-        $data = [
-            'product_id' => $this->product_id,
-            'is_primary' => $this->is_primary,
-            'sort_order' => $this->sort_order ?? 0,
-        ];
-
-        // Upload image
-        if ($this->image) {
-            $data['image_url'] = $this->image->store('product-gallery', 'public');
+        // Jika ini adalah penambahan baru (bukan edit) dan tidak ada gambar di dropzone
+        if (!$this->selected_id && empty($this->new_images)) {
+            $this->addError('new_images', 'Please upload at least one image.');
+            return;
         }
 
-        // Jika primary → set lainnya false
+        // Logic untuk Primary Image
         if ($this->is_primary) {
             ProductGalleryModel::where('product_id', $this->product_id)
-                ->where('id', '!=', $this->selected_id)
                 ->update(['is_primary' => false]);
         }
 
-        ProductGalleryModel::updateOrCreate(
-            ['id' => $this->selected_id],
-            $data
-        );
+        // JIKA MODE EDIT (Update satu gambar)
+        if ($this->selected_id) {
+            $gallery = ProductGalleryModel::find($this->selected_id);
+            $data = [
+                'product_id' => $this->product_id,
+                'is_primary' => $this->is_primary,
+                'sort_order' => $this->sort_order ?? 0,
+            ];
 
-        session()->flash(
-            'message',
-            $this->selected_id
-                ? 'Gallery image updated.'
-                : 'Gallery image added.'
-        );
+            // Jika ada gambar baru yang di-drop saat edit (ambil yang pertama saja)
+            if (!empty($this->new_images)) {
+                if ($gallery->image_url)
+                    Storage::disk('public')->delete($gallery->image_url);
+                $data['image_url'] = $this->new_images[0]->store('product-gallery', 'public');
+            }
 
+            $gallery->update($data);
+        }
+        // JIKA MODE CREATE (Bisa banyak gambar sekaligus)
+        else {
+            foreach ($this->new_images as $index => $photo) {
+                $path = $photo->store('product-gallery', 'public');
+
+                ProductGalleryModel::create([
+                    'product_id' => $this->product_id,
+                    'image_url' => $path,
+                    // Jika banyak, hanya yang pertama yang jadi primary (opsional)
+                    'is_primary' => ($index === 0) ? $this->is_primary : false,
+                    'sort_order' => ($this->sort_order ?? 0) + $index,
+                ]);
+            }
+        }
+
+        session()->flash('message', 'Gallery processed successfully.');
         $this->isOpen = false;
         $this->resetInput();
+        $this->new_images = []; // Kosongkan array dropzone
     }
-
     public function edit($id)
     {
         $gallery = ProductGalleryModel::findOrFail($id);

@@ -25,6 +25,7 @@ class CatalogPage extends Component
 
     public bool $showInquiryModal = false;
     public ?int $selectedProductId = null;
+    public $selectedProduct = null;
     public string $customer_name = '';
     public string $customer_contact = '';
     public string $message = '';
@@ -48,6 +49,7 @@ class CatalogPage extends Component
     {
         $this->resetValidation();
         $this->selectedProductId = $productId;
+        $this->selectedProduct = \App\Models\Product::find($productId);
         $this->customer_name = '';
         $this->customer_contact = '';
         $this->message = '';

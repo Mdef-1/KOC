@@ -45,10 +45,6 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="h-10 w-10 flex-shrink-0 rounded-lg border border-gray-200 bg-gray-50 overflow-hidden">
-                                        <img src="{{ $product->image_url ? asset('storage/' . $product->image_url) : 'https://ui-avatars.com/api/?name='.urlencode($product->name).'&color=7F9CF5&background=EBF4FF' }}"
-                                             class="h-full w-full object-cover">
-                                    </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900">{{ $product->name }}</div>
                                         <div class="text-xs text-gray-400 font-mono">{{ $product->slug }}</div>

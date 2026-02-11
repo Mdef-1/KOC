@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('name', 150);
             $table->string('slug', 150)->unique();
             $table->text('description')->nullable();
-            $table->string('image_url', 255)->nullable();
             $table->boolean('is_active')->default(true);
         });
     }

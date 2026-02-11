@@ -34,7 +34,6 @@ class ProductSeeder extends Seeder
                 'slug' => $slug,
                 'description' => $faker->paragraph(3),
                 'category_id' => $faker->randomElement($categories),
-                'image_url' => $faker->imageUrl(640, 480, 'products', true, $name),
                 'is_active' => $faker->boolean(90) // 90% chance of being active
             ]);
         }

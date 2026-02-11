@@ -15,12 +15,13 @@ class ProductTable extends Component
 
     // Properti Model
     public $selected_id, $category_id, $name, $slug, $description, $image_url, $is_active = true;
-    public $new_image; // Untuk menampung upload file baru
 
     // UI State
     public $isOpen = false;
     public $search = '';
     public $perPage = 10;
+
+    public $new_image;
 
     protected $rules = [
         'category_id' => 'required|exists:categories,id',
@@ -55,7 +56,6 @@ class ProductTable extends Component
             'slug' => 'required|string|unique:products,slug,' . $this->selected_id,
             'description' => 'nullable|string',
             'is_active' => 'boolean',
-            'new_image' => 'nullable|image|max:2048',
         ]);
 
         $data = [
@@ -65,11 +65,6 @@ class ProductTable extends Component
             'description' => $this->description,
             'is_active' => $this->is_active,
         ];
-
-        // Handle Upload Gambar
-        if ($this->new_image) {
-            $data['image_url'] = $this->new_image->store('products', 'public');
-        }
 
         Product::updateOrCreate(['id' => $this->selected_id], $data);
         
@@ -87,7 +82,6 @@ class ProductTable extends Component
         $this->name = $product->name;
         $this->slug = $product->slug;
         $this->description = $product->description;
-        $this->image_url = $product->image_url;
         $this->is_active = $product->is_active;
         
         $this->isOpen = true;

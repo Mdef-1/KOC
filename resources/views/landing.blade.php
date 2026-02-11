@@ -7,9 +7,9 @@
         <div class="max-w-7xl mx-auto">
           <div class="grid md:grid-cols-2 gap-16 items-center">
             <div class="fade-in">
-              <h1 id="hero-title" class="text-6xl md:text-7xl font-bold leading-tight mb-6">Tingkatkan Performamu</h1>
-              <p id="hero-subtitle" class="text-xl mb-8 opacity-70">Pakaian olahraga unisex premium untuk atlet yang
-                menuntut gaya dan fungsionalitas</p><button id="cta-button"
+              <h1 id="hero-title" class="text-6xl md:text-7xl font-bold leading-tight mb-6">Tingkatkan Kenyamanan</h1>
+              <p id="hero-subtitle" class="text-xl mb-8 opacity-70">Pakaian olahraga premium bagi yang
+                menuntut gaya dan fungsionalitas untuk hidup sehat</p><button id="cta-button"
                 class="px-8 py-4 font-semibold bg-gray-950 text-white rounded-full hover-scale text-lg"> Belanja Sekarang </button>
             </div>
             <div class="relative fade-in">
@@ -41,7 +41,7 @@
                 </svg>
               </div>
               <h3 id="feature-1-title" class="text-xl font-semibold mb-3">Kualitas Premium</h3>
-              <p id="feature-1-desc" class="opacity-70">Bahan high-performance untuk kenyamanan dan daya tahan maksimal
+              <p id="feature-1-desc" class="opacity-70">Bahan high-Quality untuk kenyamanan dan daya tahan maksimal
               </p>
             </div><!-- Feature 2 -->
             <div class="text-center fade-in p-8 rounded-2xl hover-scale bg-gray-100" style="animation-delay: 0.1s">

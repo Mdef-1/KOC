@@ -7,7 +7,7 @@
 
         {{-- Desktop --}}
         <div class="hidden md:flex items-center gap-6">
-            <a href="{{ route(name: 'catalog.index') }}" class="text-sm font-medium text-gray-600 hover:text-pink-500">
+            <a href="{{ route( 'catalog.index') }}" class="text-sm font-medium text-gray-600 hover:text-pink-500">
                 Katalog produk
             </a>
         </div>
@@ -27,13 +27,6 @@
             </button>
         </div>
 
-        {{-- Mobile Menu --}}
-        <div class="md:hidden absolute top-16 left-0 right-0 bg-white shadow-lg py-2 z-50" x-show="open"
-            @click.away="open = false" x-transition>
-            <a href="{{ route('dashboard') }}" class="block px-6 py-3 text-gray-700 hover:bg-gray-50">
-                Dashboard
-            </a>
-        </div>
     </nav>
 
     <!-- Add padding to the top of the main content to account for fixed navbar -->

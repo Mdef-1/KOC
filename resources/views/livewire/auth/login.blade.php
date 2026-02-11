@@ -15,7 +15,7 @@
                 type="text"
                 required
                 autofocus
-                autocomplete="name"
+                autocompl ete="name"
                 :placeholder="__('Full name')"
             />
 

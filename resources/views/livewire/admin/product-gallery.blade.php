@@ -35,8 +35,9 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
             @foreach($galleries as $gallery)
                 <div class="relative border rounded-lg overflow-hidden group">
-                    <img src="{{ asset('storage/' . $gallery->image_url) }}" class="w-full h-40 object-cover">
-
+                    <img src="{{ Str::startsWith($gallery->image_url, ['http://', 'https://'])
+                    ? $gallery->image_url
+                    : asset('storage/' . $gallery->image_url) }}" class="w-full h-40 object-cover">
                     @if($gallery->is_primary)
                         <span class="absolute top-2 left-2 bg-green-600 text-white text-xs px-2 py-1 rounded">Primary</span>
                     @endif
@@ -75,18 +76,18 @@
 
                         {{-- Select2 Product dengan Alpine.js --}}
                         <div class="sm:col-span-2" wire:ignore x-data="{ 
-                                                                initSelect() {
-                                                                        let el = $(this.$refs.prodSelect);
-                                                                        el.select2({
-                                                                            placeholder: '-- Select Product --',
-                                                                            allowClear: true,
-                                                                            width: '100%',
-                                                                            dropdownParent: el.parent()
-                                                                    }).on('change', (e) => {
-                                                                    @this.set('product_id', e.target.value);
-                                                                });
-                                                            }
-                                                        }"
+                                                                    initSelect() {
+                                                                            let el = $(this.$refs.prodSelect);
+                                                                            el.select2({
+                                                                                placeholder: '-- Select Product --',
+                                                                                allowClear: true,
+                                                                                width: '100%',
+                                                                                dropdownParent: el.parent()
+                                                                        }).on('change', (e) => {
+                                                                        @this.set('product_id', e.target.value);
+                                                                    });
+                                                                }
+                                                            }"
                             x-init="initSelect(); $watch('$wire.product_id', value => $( $refs.prodSelect ).val(value).trigger('change'))">
                             <label class="block text-sm font-medium">Product <span class="text-red-500">*</span></label>
                             <select x-ref="prodSelect"
@@ -107,33 +108,33 @@
                                 Produk</label>
 
                             <div wire:ignore x-data="{
-                                            initDropzone() {
-                                                // Pastikan Dropzone tidak diinisialisasi dua kali
-                                                if (Dropzone.instances.length > 0) {
-                                                    Dropzone.instances.forEach(dz => dz.destroy());
-                                                }
-
-                                                new Dropzone($refs.myDropzone, {
-                                                    url: '#', 
-                                                    autoProcessQueue: false,
-                                                    paramName: 'file',
-                                                    maxFilesize: 2,
-                                                    acceptedFiles: 'image/*',
-                                                    addRemoveLinks: true,
-                                                    // Tambahkan baris ini untuk mencegah redirect
-                                                    dictDefaultMessage: '', 
-                                                    init: function() {
-                                                        this.on('addedfile', function(file) {
-                                                            @this.upload('new_images', file, (uploadedFilename) => {
-                                                                console.log('Uploaded: ' + uploadedFilename);
-                                                            }, () => {
-                                                                alert('Upload failed');
-                                                            });
-                                                        });
+                                                initDropzone() {
+                                                    // Pastikan Dropzone tidak diinisialisasi dua kali
+                                                    if (Dropzone.instances.length > 0) {
+                                                        Dropzone.instances.forEach(dz => dz.destroy());
                                                     }
-                                                });
-                                            }
-                                        }" x-init="initDropzone()">
+
+                                                    new Dropzone($refs.myDropzone, {
+                                                        url: '#', 
+                                                        autoProcessQueue: false,
+                                                        paramName: 'file',
+                                                        maxFilesize: 2,
+                                                        acceptedFiles: 'image/*',
+                                                        addRemoveLinks: true,
+                                                        // Tambahkan baris ini untuk mencegah redirect
+                                                        dictDefaultMessage: '', 
+                                                        init: function() {
+                                                            this.on('addedfile', function(file) {
+                                                                @this.upload('new_images', file, (uploadedFilename) => {
+                                                                    console.log('Uploaded: ' + uploadedFilename);
+                                                                }, () => {
+                                                                    alert('Upload failed');
+                                                                });
+                                                            });
+                                                        }
+                                                    });
+                                                }
+                                            }" x-init="initDropzone()">
 
                                 <div x-ref="myDropzone"
                                     class="dropzone mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md cursor-pointer hover:bg-gray-50 transition">

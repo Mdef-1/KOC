@@ -7,6 +7,7 @@ use App\Livewire\Admin\InquiryTable;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Admin\ProductGallery;
 use App\Livewire\Admin\StockTransactionTable;
+use App\Livewire\ProductDetailPage;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\InventoryTable;
 use App\Livewire\Admin\UserTable;
@@ -21,7 +22,7 @@ Route::get('dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
-
+route::get('/product/{id}', ProductDetailPage::class)->name('product.detail');
 
 Volt::route('catalog', CatalogPage::class)->name('catalog.index');
 
@@ -30,7 +31,6 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('settings/profile', 'settings.profile')->name('profile.edit');
     Volt::route('settings/password', 'settings.password')->name('user-password.edit');
-    Volt::route('settings/appearance', 'settings.appearance')->name('appearance.edit');
     Volt::route('inventory', InventoryTable::class)->name('admin.inventory.index');
     Volt::route('products', ProductTable::class)->name('admin.products.index');
     Volt::route('categories', CategoryTable::class)->name('admin.categories.index');
@@ -43,11 +43,12 @@ Route::middleware(['auth'])->group(function () {
         ->middleware(
             when(
                 Features::canManageTwoFactorAuthentication()
-                    && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
+                && Features::optionEnabled(Features::twoFactorAuthentication(), 'confirmPassword'),
                 ['password.confirm'],
                 [],
             ),
         )
         ->name('two-factor.show');
 });
+
 

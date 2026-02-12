@@ -1,161 +1,221 @@
 <x-layouts.guest>
-  <body class="h-full smooth-scroll overflow-auto">
-    <div id="app" class="w-full h-full min-h-full"><!-- Navigation -->
-      
-      <!-- Hero Section -->
-      <section class="pt-32 pb-20 px-6">
+  <style>
+    .stroke-text {
+      -webkit-text-stroke: 1px #1e293b;
+      color: transparent;
+    }
+
+    /* Di layar besar, stroke lebih tebal */
+    @media (min-width: 768px) {
+      .stroke-text {
+        -webkit-text-stroke: 1.5px #1e293b;
+      }
+    }
+
+    .pattern-bg {
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .smooth-scroll {
+      scroll-behavior: smooth;
+    }
+  </style>
+
+  <body class="h-full smooth-scroll overflow-x-hidden bg-[#f8f9fa] text-slate-900 font-sans antialiased">
+    <div id="app" class="w-full">
+
+
+
+      <section class="relative pt-32 sm:pt-48 pb-16 sm:pb-32 px-4 sm:px-6">
         <div class="max-w-7xl mx-auto">
-          <div class="grid md:grid-cols-2 gap-16 items-center">
-            <div class="fade-in">
-              <h1 id="hero-title" class="text-6xl md:text-7xl font-bold leading-tight mb-6">Tingkatkan Kenyamanan</h1>
-              <p id="hero-subtitle" class="text-xl mb-8 opacity-70">Pakaian olahraga premium bagi yang
-                menuntut gaya dan fungsionalitas untuk hidup sehat</p><button id="cta-button"
-                class="px-8 py-4 font-semibold bg-gray-950 text-white rounded-full hover-scale text-lg"> Belanja Sekarang </button>
-            </div>
-            <div class="relative fade-in">
-              <div class="aspect-square rounded-3xl flex items-center justify-center">
-                <svg viewbox="0 0 400 400" class="w-full h-full"><!-- Athletic Figure -->
-                  <circle cx="200" cy="150" r="40" fill="currentColor" opacity="0.1" />
-                  <rect x="170" y="190" width="60" height="120" rx="10" fill="currentColor" opacity="0.1" />
-                  <rect x="140" y="200" width="30" height="100" rx="8" fill="currentColor" opacity="0.15" />
-                  <rect x="230" y="200" width="30" height="100" rx="8" fill="currentColor" opacity="0.15" />
-                  <!-- Geometric Elements -->
-                  <circle cx="100" cy="100" r="60" fill="currentColor" opacity="0.05" />
-                  <circle cx="320" cy="280" r="80" fill="currentColor" opacity="0.05" />
-                  <rect x="50" y="300" width="100" height="100" rx="20" fill="currentColor" opacity="0.08" />
-                </svg>
+          <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            <div class="space-y-6 sm:space-y-8 text-center lg:text-left order-2 lg:order-1">
+              <div
+                class="inline-flex items-center gap-2 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400">
+                <div class="w-8 sm:w-12 h-[1px] bg-gray-300"></div> Engineered for Endurance
               </div>
-            </div>
-          </div>
-        </div>
-      </section><!-- Features Section -->
-      <section id="features" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-          <h2 id="features-title" class="text-4xl md:text-5xl font-bold text-center mb-16">Kenapa Pilih K.O.C</h2>
-          <div class="grid md:grid-cols-3 gap-12"><!-- Feature 1 -->
-            <div class="text-center fade-in p-8 rounded-2xl hover-scale bg-gray-100">
-              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center">
-                <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
-                  <path d="M16 4L20 12H28L22 18L24 28L16 22L8 28L10 18L4 12H12L16 4Z" stroke="currentColor"
-                    stroke-width="2" fill="currentColor" opacity="0.2" />
-                </svg>
-              </div>
-              <h3 id="feature-1-title" class="text-xl font-semibold mb-3">Kualitas Premium</h3>
-              <p id="feature-1-desc" class="opacity-70">Bahan high-Quality untuk kenyamanan dan daya tahan maksimal
+              <h1 class="text-5xl sm:text-7xl lg:text-[90px] font-black leading-[0.9] tracking-tighter uppercase">
+                Nyaman <br /><span class="stroke-text">Tanpa Batas.</span>
+              </h1>
+              <p class="text-base sm:text-xl text-gray-500 max-w-md mx-auto lg:mx-0 leading-relaxed font-light">
+                Teknologi serat <span class="font-bold text-black">Ultra-Durable</span> yang tetap lembut di kulit.
               </p>
-            </div><!-- Feature 2 -->
-            <div class="text-center fade-in p-8 rounded-2xl hover-scale bg-gray-100" style="animation-delay: 0.1s">
-              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center">
-                <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
-                  <circle cx="12" cy="12" r="6" stroke="currentColor" stroke-width="2" fill="currentColor"
-                    opacity="0.2" />
-                  <circle cx="20" cy="20" r="6" stroke="currentColor" stroke-width="2" fill="currentColor"
-                    opacity="0.2" />
+              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-4">
+                <a href="{{ route('catalog.index') }}" wire:navigate>
+                  <button
+                    class="w-full sm:w-auto px-10 py-5 bg-black text-white rounded-2xl font-bold uppercase text-xs tracking-[0.2em] shadow-2xl shadow-black/20 hover:-translate-y-1 transition-all">
+                    Eksplor Koleksi
+                  </button>
+                </a>
+                <div class="flex flex-col items-center lg:items-start">
+                  <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Material Grade</p>
+                  <p class="text-sm font-black">Aero-Weave™ 2.0</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative group order-1 lg:order-2 px-4 sm:px-0">
+              <div class="absolute -inset-2 sm:-inset-4 pattern-bg -z-10 opacity-50 rounded-[2rem] sm:rounded-[3rem]">
+              </div>
+              <div
+                class="aspect-square bg-white rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border-[8px] sm:border-[12px] border-white transition-transform duration-700 group-hover:rotate-1">
+                <img src="{{ asset('landing-page/hero.jpeg') }}" alt="K.O.C Hero" class="w-full h-full object-cover">
+                <div
+                  class="absolute top-4 right-4 sm:top-6 sm:right-6 bg-black/80 backdrop-blur-md text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-bold tracking-widest uppercase border border-white/20">
+                  Tested: 500+ Washes
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="durability" class="py-16 sm:py-24 px-4 sm:px-6 bg-white">
+        <div class="max-w-7xl mx-auto">
+          <div class="grid md:grid-cols-3 gap-4 sm:gap-6">
+            <div
+              class="md:col-span-2 bg-[#f3f4f6] p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col justify-between overflow-hidden relative group">
+              <div class="relative z-10">
+                <h3 class="text-3xl sm:text-4xl font-black italic uppercase tracking-tighter mb-4">Kualitas <br>Tanpa
+                  Kompromi</h3>
+                <p class="max-w-xs text-gray-500 text-xs sm:text-sm leading-relaxed">Jahitan 'Double-Lock' untuk
+                  durabilitas maksimal.</p>
+              </div>
+              <div class="mt-8 sm:mt-12 flex flex-wrap gap-2 sm:gap-4 relative z-10">
+                <span
+                  class="px-3 py-1.5 bg-white rounded-lg text-[8px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm">Anti-Abrasion</span>
+                <span
+                  class="px-3 py-1.5 bg-white rounded-lg text-[8px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm">Sweat-Wicking</span>
+              </div>
+              <div
+                class="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-black/5 rounded-full -translate-y-1/2 translate-x-1/2">
+              </div>
+            </div>
+
+            <div
+              class="bg-black p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] text-white flex flex-col justify-between">
+              <div
+                class="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 sm:mb-8">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
                 </svg>
               </div>
-              <h3 id="feature-2-title" class="text-xl font-semibold mb-3">Desain Unisex</h3>
-              <p id="feature-2-desc" class="opacity-70">Dirancang untuk semua atlet dengan sempurna</p>
-            </div><!-- Feature 3 -->
-            <div class="text-center fade-in p-8 rounded-2xl hover-scale bg-gray-100" style="animation-delay: 0.2s">
-              <div class="w-16 h-16 mx-auto mb-6 rounded-2xl flex items-center justify-center">
-                <svg width="32" height="32" viewbox="0 0 32 32" fill="none">
-                  <path d="M16 4C16 4 8 8 8 16C8 20 10 24 16 28C22 24 24 20 24 16C24 8 16 4 16 4Z" stroke="currentColor"
-                    stroke-width="2" fill="currentColor" opacity="0.2" />
-                </svg>
-              </div>
-              <h3 id="feature-3-title" class="text-xl font-semibold mb-3">Ramah Lingkungan</h3>
-              <p id="feature-3-desc" class="opacity-70">Material eco-friendly dengan proses produksi yang etis</p>
+              <h3 class="text-xl sm:text-2xl font-bold italic uppercase tracking-tighter mb-4 leading-tight">Garansi
+                <br>Durabilitas
+              </h3>
+              <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Garansi 1 tahun untuk setiap produk K.O.C.
+              </p>
             </div>
           </div>
         </div>
-      </section><!-- Collection Preview -->
-      <section id="collection" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-bold text-center mb-16">Koleksi Terbaru</h2>
-          <div class="grid md:grid-cols-3 gap-8 mb-12">
-            <div class="group cursor-pointer">
-              <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden">
+      </section>
+
+      <section id="custom" class="py-20 sm:py-32 px-4 sm:px-6 bg-[#111] text-white overflow-hidden relative">
+        <div class="absolute inset-0 opacity-10 pattern-bg invert"></div>
+        <div class="max-w-7xl mx-auto relative z-10">
+          <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div class="order-2 lg:order-1">
+              <div class="grid grid-cols-2 gap-3 sm:gap-4">
                 <div
-                  class="w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                  <svg viewbox="0 0 300 400" class="w-full h-full">
-                    <rect width="300" height="400" fill="currentColor" opacity="0.08" />
-                    <circle cx="150" cy="120" r="30" fill="currentColor" opacity="0.15" />
-                    <rect x="120" y="150" width="60" height="150" rx="8" fill="currentColor" opacity="0.15" />
-                  </svg>
+                  class="aspect-square bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-3 sm:p-4 hover:bg-white/10 transition-colors cursor-pointer">
+                  <div class="w-full h-full pattern-bg opacity-30 rounded-lg sm:rounded-xl"></div>
+                  <p class="text-[8px] sm:text-[10px] mt-2 sm:mt-4 font-bold tracking-widest text-center uppercase">
+                    Cyber</p>
+                </div>
+                <div
+                  class="aspect-square bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-3 sm:p-4 hover:bg-white/10 transition-colors cursor-pointer mt-6 sm:mt-8">
+                  <div
+                    class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-500 opacity-30 rounded-lg sm:rounded-xl">
+                  </div>
+                  <p class="text-[8px] sm:text-[10px] mt-2 sm:mt-4 font-bold tracking-widest text-center uppercase">Neon
+                  </p>
                 </div>
               </div>
-              <h3 class="text-lg font-semibold mb-1">Jersey Training</h3>
-              <p class="opacity-60">Rp 299.000</p>
             </div>
-            <div class="group cursor-pointer">
-              <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden">
+
+            <div class="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left">
+              <h2 class="text-4xl sm:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter leading-none">
+                Desain<br /><span class="text-gray-500 text-3xl sm:text-5xl lg:text-7xl">Motif Custom</span></h2>
+              <p class="text-gray-400 text-sm sm:text-lg leading-relaxed max-w-md mx-auto lg:mx-0">Pilih motif eksklusif
+                atau unggah desainmu sendiri dengan teknologi <span
+                  class="text-white font-bold italic">Infinity-Print™</span>.</p>
+              <button
+                class="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-full font-black uppercase text-[10px] sm:text-xs tracking-widest">
+                Mulai Kustomisasi
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="collection" class="py-20 sm:py-32 px-4 sm:px-6 bg-[#f8f9fa]">
+        <div class="max-w-7xl mx-auto text-center mb-12 sm:mb-20">
+          <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter mb-4">Essential Drops
+          </h2>
+          <p class="text-gray-400 text-xs sm:text-sm font-medium">Koleksi dasar dengan kualitas tertinggi.</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
+          @foreach(['Endurance Tee' => '249k', 'Titan Shorts' => '299k', 'Armor Hoodie' => '549k'] as $name => $price)
+            <div class="group">
+              <div
+                class="aspect-[3/4] bg-white rounded-[1.5rem] sm:rounded-[2.5rem] mb-6 relative overflow-hidden flex items-center justify-center shadow-sm hover:shadow-xl transition-all duration-500">
                 <div
-                  class="w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                  <svg viewbox="0 0 300 400" class="w-full h-full">
-                    <rect width="300" height="400" fill="currentColor" opacity="0.08" />
-                    <rect x="100" y="100" width="100" height="200" rx="8" fill="currentColor" opacity="0.15" />
-                  </svg>
+                  class="absolute inset-0 flex items-center justify-center font-black text-gray-50 text-6xl sm:text-8xl -rotate-12 select-none pointer-events-none uppercase">
+                  {{ substr($name, 0, 1) }}
+                </div>
+                <button
+                  class="absolute bottom-6 px-6 py-3 bg-black text-white rounded-xl text-[9px] font-bold uppercase tracking-widest opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all">Add
+                  to Bag</button>
+              </div>
+              <div class="px-2 sm:px-4">
+                <h4 class="font-black text-lg sm:text-xl tracking-tight uppercase italic">{{ $name }}</h4>
+                <div class="flex justify-between items-center mt-2">
+                  <p class="text-[8px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">Eco-Poly
+                    Material</p>
+                  <span class="font-bold text-base sm:text-lg">Rp {{ $price }}</span>
                 </div>
               </div>
-              <h3 class="text-lg font-semibold mb-1">Celana Olahraga</h3>
-              <p class="opacity-60">Rp 349.000</p>
             </div>
-            <div class="group cursor-pointer">
-              <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden">
-                <div
-                  class="w-full h-full flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
-                  <svg viewbox="0 0 300 400" class="w-full h-full">
-                    <rect width="300" height="400" fill="currentColor" opacity="0.08" />
-                    <circle cx="150" cy="120" r="30" fill="currentColor" opacity="0.15" />
-                    <rect x="110" y="150" width="80" height="180" rx="10" fill="currentColor" opacity="0.15" />
-                  </svg>
-                </div>
-              </div>
-              <h3 class="text-lg font-semibold mb-1">Hoodie Sport</h3>
-              <p class="opacity-60">Rp 499.000</p>
+          @endforeach
+        </div>
+      </section>
+
+      <footer class="py-12 sm:py-20 px-4 sm:px-6 bg-white border-t border-gray-100">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-100 pb-12 sm:pb-20">
+          <div class="col-span-1 md:col-span-2 text-center md:text-left">
+            <div class="text-2xl sm:text-3xl font-black italic tracking-tighter mb-6">K.O.C</div>
+            <p class="max-w-xs mx-auto md:mx-0 text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">
+              Mendefinisikan ulang pakaian olahraga sejak 2024.</p>
+          </div>
+          <div class="text-center md:text-left space-y-4">
+            <h5 class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em]">Links</h5>
+            <ul class="text-xs sm:text-sm text-gray-500 space-y-2 uppercase font-bold tracking-widest">
+              <li><a href="#" class="hover:text-black">Size Guide</a></li>
+              <li><a href="#" class="hover:text-black">Custom</a></li>
+            </ul>
+          </div>
+          <div class="text-center md:text-left space-y-4">
+            <h5 class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em]">Social</h5>
+            <div class="flex justify-center md:justify-start gap-4">
+              <a href="#"
+                class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all italic font-black text-[10px]">Ig</a>
+              <a href="#"
+                class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all italic font-black text-[10px]">Tw</a>
             </div>
           </div>
-          <div class="text-center"><a href="#catalog"
-              class="inline-block px-8 py-4 rounded-full font-semibold hover-scale bg-gray-100" id="view-catalog-btn"> Lihat Katalog
-              Lengkap </a>
-          </div>
         </div>
-      </section><!-- Full Catalog Section -->
-      <section id="catalog" class="py-20 px-6">
-        <div class="max-w-7xl mx-auto">
-          <h2 class="text-4xl md:text-5xl font-bold text-center mb-8">Katalog Produk</h2>
-          <p class="text-center text-lg opacity-70 mb-12 max-w-2xl mx-auto">Jelajahi koleksi lengkap pakaian olahraga
-            unisex kami yang dirancang untuk performa maksimal</p><!-- Filter Tabs -->
-          <div class="flex flex-wrap justify-center gap-4 mb-12"><button
-              class="catalog-filter px-6 py-2 rounded-full font-medium transition-all active" data-category="semua">
-              Semua Produk </button> <button class="catalog-filter px-6 py-2 rounded-full font-medium transition-all"
-              data-category="jersey"> Jersey &amp; Kaos </button> <button
-              class="catalog-filter px-6 py-2 rounded-full font-medium transition-all" data-category="celana"> Celana
-              &amp; Legging </button> <button class="catalog-filter px-6 py-2 rounded-full font-medium transition-all"
-              data-category="jaket"> Jaket &amp; Hoodie </button> <button
-              class="catalog-filter px-6 py-2 rounded-full font-medium transition-all" data-category="aksesoris">
-              Aksesoris </button>
-          </div><!-- Catalog Grid -->
-          <div id="catalog-grid" class="grid md:grid-cols-4 gap-6"><!-- Products will be rendered here by JavaScript -->
+        <div
+          class="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
+          <p class="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">© 2026 K.O.C Athletics.
+          </p>
+          <div class="flex gap-6 sm:gap-8 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
           </div>
-        </div>
-      </section><!-- Contact Section -->
-      <section id="contact" class="py-20 px-6">
-        <div class="max-w-3xl mx-auto text-center">
-          <h2 class="text-4xl md:text-5xl font-bold mb-6">Hubungi Kami</h2>
-          <p class="text-xl mb-8 opacity-70">Punya pertanyaan? Kami siap membantu Anda.</p>
-          <div class="flex flex-wrap justify-center gap-6"><a href="mailto:info@koc.com"
-              class="px-8 py-4 rounded-full font-semibold hover-scale"> Email Kami </a> <a href="https://instagram.com"
-              target="_blank" rel="noopener noreferrer" class="px-8 py-4 rounded-full font-semibold hover-scale">
-              Instagram </a>
-          </div>
-        </div>
-      </section><!-- Footer -->
-      <footer class="border-t py-8 px-6">
-        <div class="max-w-7xl mx-auto text-center opacity-60">
-          <p id="footer-text">© 2024 K.O.C. All rights reserved.</p>
         </div>
       </footer>
+
     </div>
   </body>
 </x-layouts.guest>

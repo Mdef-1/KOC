@@ -1,192 +1,225 @@
-<div class="py-20 px-6">
-    <div class="max-w-7xl mx-auto">
-        <h1 class="text-4xl md:text-5xl font-bold text-center mb-8">Katalog Produk</h1>
-
-        @if (session()->has('success'))
-            <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 3000)" x-show="show"
-                class="mb-6 max-w-2xl mx-auto rounded-xl border border-green-200 bg-green-50 text-green-800 px-4 py-3 text-sm text-center">
-                {{ session('success') }}
+<div class="bg-[#f8f9fa] min-h-screen selection:bg-black selection:text-white">
+    <section class="relative pt-32 pb-16 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto text-center">
+            <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-8 sm:w-12 h-[1px] bg-gray-300"></div>
+                <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.4em] text-gray-400">
+                    Our Collection
+                </span>
+                <div class="w-8 sm:w-12 h-[1px] bg-gray-300"></div>
             </div>
-        @endif
 
-        @if($search || $category)
-            <p class="text-center text-lg opacity-70 mb-8">
-                @if($search)
-                    Hasil untuk "{{ $search }}"
-                @endif
-                @if($search && $category)
-                    •
-                @endif
-                @if($category)
-                    Kategori: {{ optional($categories->firstWhere('slug', $category))->name ?? 'Semua' }}
+            <h1 class="text-5xl sm:text-7xl lg:text-8xl font-black leading-[0.9] tracking-tighter uppercase mb-8">
+                Katalog <br /><span class="stroke-text">Produk</span>
+            </h1>
+
+            @if (session()->has('success'))
+                <div x-data="{ show: true }" x-init="setTimeout(() => show = false, 4000)" x-show="show"
+                    x-transition:leave="transition ease-in duration-500"
+                    class="mb-8 max-w-md mx-auto rounded-2xl bg-black text-white px-8 py-4 text-[10px] font-bold uppercase tracking-widest shadow-2xl">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <p class="text-gray-500 text-sm sm:text-base max-w-xl mx-auto leading-relaxed font-light italic">
+                @if($search || $category)
+                    Menampilkan hasil untuk <span class="text-black font-bold">"{{ $search ?: $category }}"</span>
+                @else
+                    "Kualitas yang bicara, kenyamanan yang terasa." — Eksplorasi koleksi terbaik untuk performa harianmu.
                 @endif
             </p>
-        @else
-            <p class="text-center text-lg opacity-70 mb-12 max-w-2xl mx-auto">Jelajahi koleksi lengkap pakaian olahraga
-                unisex kami.</p>
-        @endif
-
-        <div class="max-w-3xl mx-auto mb-8">
-            <input type="text" placeholder="Cari produk..." wire:model.live="search"
-                class="w-full px-5 py-3 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-950" />
         </div>
+    </section>
 
-        <div class="flex flex-wrap justify-center gap-3 mb-12">
-            <button wire:click="setCategory('')"
-                class="px-6 py-2 rounded-full font-medium transition-all {{ $category === '' ? 'bg-gray-950 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">Semua
-                Produk</button>
-            @foreach($categories as $cat)
-                <button wire:key="cat-{{ $cat->id }}" wire:click="setCategory('{{ $cat->slug }}')"
-                    class="px-6 py-2 rounded-full font-medium transition-all {{ $category === $cat->slug ? 'bg-gray-950 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-800' }}">{{ $cat->name }}</button>
-            @endforeach
+    <section class="pb-12 px-4">
+        <div class="max-w-4xl mx-auto space-y-8">
+            <div class="relative group">
+                <input type="text" placeholder="CARI KOLEKSI SPESIFIK..." wire:model.live="search"
+                    class="w-full px-8 py-5 rounded-2xl border-none bg-white shadow-sm focus:ring-2 focus:ring-gray-200 transition-all duration-500 text-xs font-bold tracking-widest placeholder:text-gray-300" />
+                <div
+                    class="absolute right-6 top-1/2 -translate-y-1/2 text-gray-300 group-focus-within:text-black transition-colors">
+                    <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-2 sm:gap-3">
+                <button wire:click="setCategory('')"
+                    class="px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] rounded-full transition-all border {{ $category === '' ? 'bg-black text-white border-black shadow-xl shadow-black/20' : 'bg-white text-gray-400 border-gray-100 hover:border-black hover:text-black' }}">
+                    All
+                </button>
+                @foreach($categories as $cat)
+                    <button wire:key="cat-{{ $cat->id }}" wire:click="setCategory('{{ $cat->slug }}')"
+                        class="px-8 py-3 text-[10px] font-black uppercase tracking-[0.2em] rounded-full transition-all border {{ $category === $cat->slug ? 'bg-black text-white border-black shadow-xl shadow-black/20' : 'bg-white text-gray-400 border-gray-100 hover:border-black hover:text-black' }}">
+                        {{ $cat->name }}
+                    </button>
+                @endforeach
+            </div>
         </div>
+    </section>
 
-        <div wire:loading.flex class="justify-center items-center py-20">
-            <div class="w-6 h-6 rounded-full border-2 border-gray-300 border-t-gray-900 animate-spin"></div>
-        </div>
+    <section class="pb-32 px-4 sm:px-6">
+        <div class="max-w-7xl mx-auto">
+            <div wire:loading.flex class="justify-center items-center py-20">
+                <div class="w-10 h-10 rounded-full border-[3px] border-gray-100 border-t-black animate-spin"></div>
+            </div>
 
-        <div wire:loading.remove>
-            <div class="grid md:grid-cols-4 gap-6">
-
-                @forelse($products as $product)
-                    @php
-                        $galleryImage = optional($product->gallery->first())->image_url;
-                        $img = $galleryImage ? \Illuminate\Support\Str::startsWith($galleryImage, 'http')
-                            ? $galleryImage
-                            : (\Illuminate\Support\Str::startsWith($galleryImage, 'storage/')
-                                ? asset($galleryImage)
-                                : (\Illuminate\Support\Str::startsWith($galleryImage, 'product-gallery/')
-                                    ? asset('storage/' . $galleryImage)
-                                    : asset('storage/' . $galleryImage)))
-                            : ($product->image_url
-                                ? (\Illuminate\Support\Str::startsWith($product->image_url, 'http')
+            <div wire:loading.remove>
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-12 sm:gap-x-8 sm:gap-y-20">
+                    @forelse($products as $product)
+                        @php
+                            $galleryImage = optional($product->gallery->first())->image_url;
+                            $img = $galleryImage ? (\Illuminate\Support\Str::startsWith($galleryImage, 'http')
+                                ? $galleryImage
+                                : asset('storage/' . preg_replace('/^storage\//', '', $galleryImage)))
+                                : ($product->image_url ? (\Illuminate\Support\Str::startsWith($product->image_url, 'http')
                                     ? $product->image_url
-                                    : (\Illuminate\Support\Str::startsWith($product->image_url, 'products/')
-                                        ? asset('storage/' . $product->image_url)
-                                        : asset('storage/products/' . $product->image_url)))
-                                : null);
-                    @endphp
-                    <a href="{{ route('product.detail', ['id' => $product->id]) }}" wire:navigate>
-                        <div class="group cursor-pointer">
-                            <div class="aspect-[3/4] rounded-2xl mb-4 overflow-hidden bg-gray-100">
+                                    : asset('storage/' . preg_replace('/^storage\//', '', $product->image_url)))
+                                    : null);
+                        @endphp
+
+                        <div class="group" wire:key="prod-{{ $product->id }}">
+                            <div
+                                class="relative aspect-[3/4] bg-white rounded-[1.5rem] sm:rounded-[2.5rem] mb-6 overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500">
                                 @if($img)
-                                    <img wire:click src="{{ $img }}" alt="{{ $product->image_alt ?? $product->name }}"
-                                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                                        onerror="this.onerror=null; this.src='data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22300%22%20height%3D%22400%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20300%20400%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_18c2c3a3f9d%20text%20%7B%20fill%3A%23AAAAAA%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A15pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_18c2c3a3f9d%22%3E%3Crect%20width%3D%22300%22%20height%3D%22400%22%20fill%3D%22%23F5F5F5%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22110.5%22%20y%3D%22220%22%3ENo%20Image%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E';">
+                                    <img src="{{ $img }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
                                 @else
-                                    <div class="w-full h-full flex items-center justify-center">
-                                        <svg viewBox="0 0 300 400" class="w-full h-full">
-                                            <rect width="300" height="400" fill="currentColor" opacity="0.08" />
-                                            <circle cx="150" cy="120" r="30" fill="currentColor" opacity="0.15" />
-                                            <rect x="110" y="160" width="80" height="180" rx="10" fill="currentColor"
-                                                opacity="0.15" />
-                                        </svg>
+                                    <div class="w-full h-full flex items-center justify-center bg-gray-50 text-gray-200">
+                                        <span
+                                            class="font-black text-4xl uppercase -rotate-12">{{ substr($product->name, 0, 1) }}</span>
                                     </div>
                                 @endif
-                            </div>
-                            <h3 class="text-lg font-semibold mb-1">{{ $product->name }}</h3>
-                            @if(!is_null($product->price))
-                                <p class="opacity-60">Rp {{ number_format((float) $product->price, 0, ',', '.') }}</p>
-                            @else
-                                <p class="opacity-60">Hubungi kami</p>
-                            @endif
-                        </div>
-                    </a>
-                @empty
-                    <div class="col-span-full text-center py-16">
-                        <p class="text-lg opacity-70">Tidak ada produk ditemukan.</p>
-                    </div>
-                @endforelse
-            </div>
 
-            <div class="mt-10">
-                {{ $products->onEachSide(1)->links() }}
+                                <div
+                                    class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center p-4">
+                                    <div class="space-y-2 w-full max-w-[140px]">
+                                        <a href="{{ route('product.detail', ['id' => $product->id]) }}" wire:navigate
+                                            class="block w-full py-3 bg-white text-black text-center rounded-xl text-[9px] font-black uppercase tracking-widest hover:bg-gray-100 transition-colors">
+                                            Detail
+                                        </a>
+                                        <button wire:click="openInquiry({{ $product->id }})"
+                                            class="block w-full py-3 bg-black text-white text-center rounded-xl text-[9px] font-black uppercase tracking-widest border border-white/20 hover:bg-gray-900 transition-colors">
+                                            Inquiry
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="px-2">
+                                <h4
+                                    class="font-black text-base sm:text-lg tracking-tight uppercase italic leading-tight group-hover:text-gray-600 transition-colors">
+                                    {{ $product->name }}
+                                </h4>
+                                <div class="flex justify-between items-center mt-2">
+                                    <p class="text-[9px] text-gray-400 font-bold uppercase tracking-[0.1em]">
+                                        {{ $product->category->name ?? 'Essentials' }}
+                                    </p>
+                                    <span class="font-bold text-sm sm:text-base">
+                                        {{ $product->price ? 'Rp ' . number_format($product->price, 0, ',', '.') : 'Tanya Harga' }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    @empty
+                        <div
+                            class="col-span-full text-center py-32 bg-white rounded-[3rem] shadow-sm border border-gray-100">
+                            <p class="text-gray-400 font-black uppercase tracking-widest text-xs">Koleksi Tidak Ditemukan
+                            </p>
+                        </div>
+                    @endforelse
+                </div>
+
+                <div class="mt-24">
+                    {{ $products->links() }}
+                </div>
             </div>
         </div>
-    </div>
-    @if($showInquiryModal)
-        <div class="fixed inset-0 z-50" wire:keydown.escape.window="closeInquiry">
-            <div class="absolute inset-0 bg-black/50" wire:click="closeInquiry"></div>
-            <div class="relative mx-auto max-w-lg px-4 top-24">
-                <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-                    <div class="p-6 md:p-8">
-                        <div class="flex items-start gap-4 mb-6">
-                            <div class="w-24 h-32 rounded-xl overflow-hidden bg-gray-100 shrink-0">
-                                @php
-                                    $selImg = null;
-                                    if (isset($selectedProduct) && $selectedProduct->gallery->isNotEmpty()) {
-                                        $g = $selectedProduct->gallery->first()->image_url;
+    </section>
 
-                                        if (\Illuminate\Support\Str::startsWith($g, ['http://', 'https://'])) {
-                                            $selImg = $g;
-                                        } else {
-                                            // Bersihkan semua kemungkinan prefix 'storage/' atau '/' agar tidak double
-                                            $path = ltrim($g, '/');
-                                            $path = preg_replace('/^storage\//', '', $path);
-                                            $selImg = asset('storage/' . $path);
-                                        }
-                                    }
-                                @endphp
-                                @if($selImg)
-                                    <a href="">
-                                        <img src="{{ $selImg }}" alt="{{ $selectedProduct->name ?? 'Produk' }}"
-                                            class="w-full h-full object-cover">
-                                    </a>
-                                @else
-                                    <div class="w-full h-full flex items-center justify-center">
-                                        <svg viewBox="0 0 300 400" class="w-full h-full">
-                                            <rect width="300" height="400" fill="currentColor" opacity="0.08" />
-                                            <circle cx="150" cy="120" r="30" fill="currentColor" opacity="0.15" />
-                                            <rect x="110" y="160" width="80" height="180" rx="10" fill="currentColor"
-                                                opacity="0.15" />
-                                        </svg>
-                                    </div>
-                                @endif
+    <div x-data="{ open: @entangle('showInquiryModal') }" x-show="open"
+        x-effect="document.body.style.overflow = open ? 'hidden' : 'auto'"
+        class="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6" style="display: none;">
+
+        <div class="absolute inset-0 bg-black/90 backdrop-blur-sm transition-opacity" x-show="open"
+            x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0"
+            x-transition:enter-end="opacity-100" wire:click="closeInquiry"></div>
+
+        @if($selectedProduct)
+            <div class="relative w-full max-w-4xl bg-white rounded-[2.5rem] sm:rounded-[3.5rem] shadow-2xl overflow-hidden"
+                x-show="open" x-transition:enter="ease-out duration-300"
+                x-transition:enter-start="opacity-0 scale-95 translate-y-4"
+                x-transition:enter-end="opacity-100 scale-100 translate-y-0">
+
+                <div class="grid md:grid-cols-2">
+                    <div class="hidden md:block relative bg-gray-100">
+                        @php
+                            $modalImg = optional($selectedProduct->gallery->first())->image_url ?? $selectedProduct->image_url;
+                            $modalImgUrl = $modalImg ? (\Illuminate\Support\Str::startsWith($modalImg, 'http')
+                                ? $modalImg
+                                : asset('storage/' . preg_replace('/^storage\//', '', $modalImg))) : null;
+                        @endphp
+                        <img src="{{ $modalImgUrl }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                        <div class="absolute bottom-12 left-12 text-white">
+                            <h3 class="text-4xl font-black italic uppercase tracking-tighter mb-2">
+                                {{ $selectedProduct->name }}</h3>
+                            <p class="text-[10px] font-bold uppercase tracking-[0.3em] opacity-60">Verified Athletic Grade
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="p-10 sm:p-16">
+                        <div class="flex justify-between items-start mb-12">
+                            <div>
+                                <h2 class="text-3xl font-black uppercase italic tracking-tighter leading-none">Inquiry</h2>
+                                <div class="h-1 w-12 bg-black mt-4"></div>
                             </div>
-                            <div class="min-w-0">
-                                <h3 class="font-semibold text-lg leading-tight">{{ $selectedProduct->name ?? 'Produk' }}
-                                </h3>
-                                <p class="text-sm text-gray-500">Silakan isi formulir di bawah untuk mengirimkan inquiry.
-                                </p>
-                            </div>
-                            <button class="ml-auto text-gray-400 hover:text-gray-600" wire:click="closeInquiry"
-                                aria-label="Tutup">
-                                ✕
+                            <button wire:click="closeInquiry" class="text-gray-300 hover:text-black transition-colors">
+                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                             </button>
                         </div>
 
-                        <form wire:submit.prevent="submitInquiry" class="grid gap-4">
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Nama</label>
-                                <input type="text" wire:model.defer="customer_name"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-900">
-                                @error('customer_name')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                        <form wire:submit.prevent="submitInquiry" class="space-y-8">
+                            <div class="relative group">
+                                <input type="text" wire:model="customer_name" required
+                                    class="w-full border-b-2 border-gray-100 focus:border-black transition-all outline-none py-3 text-sm font-bold uppercase tracking-widest peer bg-transparent">
+                                <label
+                                    class="absolute left-0 top-3 text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-black peer-valid:-top-4 peer-valid:text-black">Nama
+                                    Lengkap</label>
                             </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Kontak (Email/WA)</label>
-                                <input type="text" wire:model.defer="customer_contact"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-900">
-                                @error('customer_contact')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium mb-1">Pesan</label>
-                                <textarea rows="4" wire:model.defer="message"
-                                    class="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-900"
-                                    placeholder="Saya tertarik dengan produk ini..."></textarea>
-                                @error('message')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
-                            </div>
-                            @error('selectedProductId')<p class="text-sm text-red-600">{{ $message }}</p>@enderror
 
-                            <div class="flex items-center justify-end gap-3 pt-2">
-                                <button type="button" class="px-4 py-2 rounded-xl border border-gray-200"
-                                    wire:click="closeInquiry">Batal</button>
-                                <button type="submit" class="px-5 py-2 rounded-xl bg-gray-950 text-white">Kirim
-                                    Inquiry</button>
+                            <div class="relative group">
+                                <input type="text" wire:model="customer_contact" required
+                                    class="w-full border-b-2 border-gray-100 focus:border-black transition-all outline-none py-3 text-sm font-bold uppercase tracking-widest peer bg-transparent">
+                                <label
+                                    class="absolute left-0 top-3 text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-black peer-valid:-top-4 peer-valid:text-black">Kontak
+                                    (WA/Email)</label>
                             </div>
+
+                            <div class="relative group">
+                                <textarea wire:model="message" rows="2" required
+                                    class="w-full border-b-2 border-gray-100 focus:border-black transition-all outline-none py-3 text-sm font-bold uppercase tracking-widest peer bg-transparent resize-none"></textarea>
+                                <label
+                                    class="absolute left-0 top-3 text-[9px] font-black uppercase tracking-[0.2em] text-gray-300 pointer-events-none transition-all peer-focus:-top-4 peer-focus:text-black peer-valid:-top-4 peer-valid:text-black">Pesan
+                                    Singkat</label>
+                            </div>
+
+                            <button type="submit" wire:loading.attr="disabled"
+                                class="w-full py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.4em] rounded-2xl hover:bg-gray-800 transition-all shadow-2xl shadow-black/20 flex justify-center items-center gap-3">
+                                <span wire:loading.remove>Kirim Inquiry</span>
+                                <span wire:loading
+                                    class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                            </button>
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
+    </div>
 </div>

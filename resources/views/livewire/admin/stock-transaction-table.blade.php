@@ -30,9 +30,13 @@
         <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Transaction ID</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Product</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Qty</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reference</th>
+                    <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase">Stock</th>
                     <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
             </thead>
@@ -40,31 +44,38 @@
                 @forelse($transactions as $trx)
                     <tr class="hover:bg-gray-50">
                         <td class="px-6 py-4">
-                            <div class="text-sm font-medium text-gray-900">{{ $trx->inventory->product->name ?? 'N/A' }}
-                            </div>
-                            <div class="text-xs text-gray-500">SKU: {{ $trx->inventory->sku ?? '-' }}</div>
+                            <div class="text-sm font-mono text-gray-900">{{ $trx->transaction_id }}</div>
+                            <div class="text-xs text-gray-500">{{ $trx->created_at->format('d M Y H:i') }}</div>
                         </td>
                         <td class="px-6 py-4">
-                            <span
-                                class="px-2 py-1 text-xs font-semibold rounded-full {{ $trx->type == 'in' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800' }}">
+                            <div class="text-sm font-medium text-gray-900">{{ $trx->product->name ?? 'N/A' }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="text-sm text-gray-900">{{ $trx->size->label ?? '-' }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="px-2 py-1 text-xs font-semibold rounded-full {{ $trx->type == 'in' ? 'bg-blue-100 text-blue-800' : 'bg-orange-100 text-orange-800' }}">
                                 {{ strtoupper($trx->type) }}
                             </span>
                         </td>
-                        <td
-                            class="px-6 py-4 text-right font-bold {{ $trx->type == 'in' ? 'text-green-600' : 'text-red-600' }}">
+                        <td class="px-6 py-4 text-right font-bold {{ $trx->type == 'in' ? 'text-green-600' : 'text-red-600' }}">
                             {{ $trx->type == 'in' ? '+' : '-' }}{{ number_format($trx->quantity) }}
                         </td>
+                        <td class="px-6 py-4">2101
+                        
+                            <div class="text-sm text-gray-900">{{ $trx->reference_id ?? '-' }}</div>
+                        </td>
+                        <td class="px-6 py-4 text-center">
+                            <div class="text-xs text-gray-500">{{ $trx->old_stock }} → {{ $trx->new_stock }}</div>
+                        </td>
                         <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
-                            <button wire:click="edit({{ $trx->id }})"
-                                class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                            <button wire:click="delete({{ $trx->id }})"
-                                onclick="confirm('Hapus transaksi?') || event.stopImmediatePropagation()"
-                                class="text-red-600 hover:text-red-900">Delete</button>
+                            <button wire:click="edit({{ $trx->id }})" class="text-indigo-600 hover:text-indigo-900">Edit</button>
+                            <button wire:click="delete({{ $trx->id }})" onclick="confirm('Hapus transaksi?') || event.stopImmediatePropagation()" class="text-red-600 hover:text-red-900">Delete</button>
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="4" class="px-6 py-12 text-center text-gray-500">No transactions found.</td>
+                        <td colspan="8" class="px-6 py-12 text-center text-gray-500">No transactions found.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -84,48 +95,31 @@
                     <form wire:submit.prevent="store">
                         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
 
-                            <div class="sm:col-span-2" wire:ignore x-data="{ 
-                                        initSelect2() {
-                                            let el = $(this.$refs.select);
-                                            el.select2({
-                                                placeholder: '-- Select SKU / Product --',
-                                                allowClear: true,
-                                                width: '100%',
-                                                dropdownParent: el.parent(),
-                                                matcher: function(params, data) {
-                                                    if ($.trim(params.term) === '') return data;
-                                                    let term = params.term.toUpperCase();
-                                                    let text = data.text.toUpperCase();
-                                                    // Match dari depan (Start With) atau setelah spasi
-                                                    return (text.indexOf(term) === 0 || text.indexOf(' ' + term) > -1) ? data : null;
-                                                }
-                                            }).on('change', (e) => {
-                                                @this.set('inventory_id', e.target.value);
-                                            });
-                                        }
-                                    }" x-init="
-                                        initSelect2();
-                                        $watch('$wire.inventory_id', value => $( $refs.select ).val(value).trigger('change'));
-                                    ">
-
-                                <label class="block text-sm font-medium text-gray-700">Inventory Item <span
-                                        class="text-red-500">*</span></label>
-                                <select x-ref="select" id="select2-inventory"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
-                                    <option value="">-- Select SKU / Product --</option>
-                                    @foreach($inventory_items as $item)
-                                        <option value="{{ $item->id }}" {{ $inventory_id == $item->id ? 'selected' : '' }}>
-                                            {{ $item->sku }} - {{ $item->product->name ?? 'N/A' }}
-                                        </option>
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Product <span class="text-red-500">*</span></label>
+                                <select wire:model="product_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                    <option value="">-- Select Product --</option>
+                                    @foreach($products as $product)
+                                        <option value="{{ $product->id }}">{{ $product->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('inventory_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                                @error('product_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Size <span class="text-red-500">*</span></label>
+                                <select wire:model="size_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm">
+                                    <option value="">-- Select Size --</option>
+                                    @foreach($sizes as $size)
+                                        <option value="{{ $size->id }}">{{ $size->label }}</option>
+                                    @endforeach
+                                </select>
+                                @error('size_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Type</label>
-                                <select wire:model.defer="type"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <select wire:model="type" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                                     <option value="in">Stock In (+)</option>
                                     <option value="out">Stock Out (-)</option>
                                 </select>
@@ -133,15 +127,19 @@
 
                             <div>
                                 <label class="block text-sm font-medium text-gray-700">Quantity</label>
-                                <input type="number" wire:model.defer="quantity"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                <input type="number" wire:model="quantity" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
                                 @error('quantity') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                             </div>
 
                             <div class="sm:col-span-2">
+                                <label class="block text-sm font-medium text-gray-700">Reference ID</label>
+                                <input type="text" wire:model="reference_id" placeholder="Nomor Invoice / PO" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm">
+                                @error('reference_id') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            </div>
+
+                            <div class="sm:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700">Description</label>
-                                <textarea wire:model.defer="description" rows="3"
-                                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
+                                <textarea wire:model="description" rows="3" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm sm:text-sm"></textarea>
                             </div>
                         </div>
 

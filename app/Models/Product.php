@@ -19,15 +19,27 @@ class Product extends Model
         'slug',
         'description',
         'is_active',
+        'is_featured',
+        'featured_order',
+        'view_count',
+        'order_count',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
+        'is_featured' => 'boolean',
+        'view_count' => 'integer',
+        'order_count' => 'integer',
     ];
 
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    public function scopeFeatured($query)
+    {
+        return $query->where('is_featured', true)->orderBy('featured_order')->orderBy('id');
     }
 
     public function gallery(): HasMany

@@ -17,6 +17,7 @@ class Inventory extends Model
 
     protected $fillable = [
         'product_id',
+        'sizes_id',
         'sku',
         'warehouse_location',   
         'stock',
@@ -31,10 +32,25 @@ class Inventory extends Model
         'last_updated' => 'datetime',
     ];
 
+    protected $appends = ['final_price'];
+
+    public function getFinalPriceAttribute(): float
+    {
+        $basePrice = (float) $this->price;
+        $extraPrice = (float) ($this->size->extra_price ?? 0);
+        return $basePrice + $extraPrice;
+    }
+
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class, 'sizes_id');
+    }
+
     public function stockTransaction(): HasMany
     {
         return $this->hasMany(StockTransaction::class);

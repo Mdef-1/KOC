@@ -22,4 +22,9 @@ class Category extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function sizes(): HasMany
+    {
+        return $this->hasMany(Size::class);
+    }
 }

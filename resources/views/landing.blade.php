@@ -1,221 +1,410 @@
-<x-layouts.guest>
-  <style>
-    .stroke-text {
-      -webkit-text-stroke: 1px #1e293b;
-      color: transparent;
-    }
+<!DOCTYPE html>
+<html lang="id">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>KOC Apparel — Wear Your Identity</title>
+ <meta name="description" content="Brand apparel dengan desain original dan printing berkualitas tinggi. Custom baju untuk komunitas, event, dan brand.">
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+ <script src="https://unpkg.com/lucide@latest"></script>
+ @vite(['resources/css/app.css'])
+ <style>
+  :root { --brand-black: #0a0a0a; --brand-gray: #6b7280; --brand-light: #f5f5f5; }
+  body { font-family: 'Inter', sans-serif; }
+  .font-heading { font-family: 'Syne', sans-serif; }
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .pulse-btn { animation: pulse-glow 2s infinite; }
+  @keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 0 0 rgba(10,10,10,0.15); } 50% { box-shadow: 0 0 0 10px rgba(10,10,10,0); } }
+  .marquee-track { animation: marquee 30s linear infinite; }
+  @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .nav-scrolled { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid #e5e7eb; }
+ </style>
+ @livewireStyles
+</head>
+<body class="h-full">
+ <div id="app-wrapper" class="w-full h-full overflow-auto bg-white text-gray-900 relative z-0">
+  
+  {{-- Navbar --}}
+  @livewire('navbar')
+  <div class="h-16 sm:h-20"></div>
 
-    /* Di layar besar, stroke lebih tebal */
-    @media (min-width: 768px) {
-      .stroke-text {
-        -webkit-text-stroke: 1.5px #1e293b;
-      }
-    }
+  {{-- HERO SECTION --}}
+  <section id="hero" class="relative min-h-[85vh] flex items-center bg-gray-50">
+   <div class="max-w-7xl mx-auto px-6 py-20 w-full">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+     {{-- Left: Value Prop --}}
+     <div class="order-2 lg:order-1">
+      <div class="reveal inline-flex items-center gap-2 bg-white border border-gray-200 rounded-full px-4 py-1.5 text-xs font-medium text-gray-500 mb-6 shadow-sm">
+       <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+       Open Order — Fast Production 7-14 Days
+      </div>
+      
+      <h1 class="reveal font-heading font-800 text-5xl md:text-7xl leading-[1.05] tracking-tight mb-6">
+       Wear Your<br><span class="italic text-gray-600">Identity.</span>
+      </h1>
+      
+      <p class="reveal text-gray-600 text-lg md:text-xl max-w-md leading-relaxed mb-8">
+       Desain original, printing premium. Bukan mass-produced — tiap piece punya cerita.
+      </p>
 
-    .pattern-bg {
-      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-    }
-
-    .smooth-scroll {
-      scroll-behavior: smooth;
-    }
-  </style>
-
-  <body class="h-full smooth-scroll overflow-x-hidden bg-[#f8f9fa] text-slate-900 font-sans antialiased">
-    <div id="app" class="w-full">
-
-
-
-      <section class="relative pt-32 sm:pt-48 pb-16 sm:pb-32 px-4 sm:px-6">
-        <div class="max-w-7xl mx-auto">
-          <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            <div class="space-y-6 sm:space-y-8 text-center lg:text-left order-2 lg:order-1">
-              <div
-                class="inline-flex items-center gap-2 text-[9px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-gray-400">
-                <div class="w-8 sm:w-12 h-[1px] bg-gray-300"></div> Engineered for Endurance
-              </div>
-              <h1 class="text-5xl sm:text-7xl lg:text-[90px] font-black leading-[0.9] tracking-tighter uppercase">
-                Nyaman <br /><span class="stroke-text">Tanpa Batas.</span>
-              </h1>
-              <p class="text-base sm:text-xl text-gray-500 max-w-md mx-auto lg:mx-0 leading-relaxed font-light">
-                Teknologi serat <span class="font-bold text-black">Ultra-Durable</span> yang tetap lembut di kulit.
-              </p>
-              <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-6 sm:gap-8 pt-4">
-                <a href="{{ route('catalog.index') }}" wire:navigate>
-                  <button
-                    class="w-full sm:w-auto px-10 py-5 bg-black text-white rounded-2xl font-bold uppercase text-xs tracking-[0.2em] shadow-2xl shadow-black/20 hover:-translate-y-1 transition-all">
-                    Eksplor Koleksi
-                  </button>
-                </a>
-                <div class="flex flex-col items-center lg:items-start">
-                  <p class="text-[10px] font-bold uppercase tracking-widest text-gray-400">Material Grade</p>
-                  <p class="text-sm font-black">Aero-Weave™ 2.0</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="relative group order-1 lg:order-2 px-4 sm:px-0">
-              <div class="absolute -inset-2 sm:-inset-4 pattern-bg -z-10 opacity-50 rounded-[2rem] sm:rounded-[3rem]">
-              </div>
-              <div
-                class="aspect-square bg-white rounded-[2rem] sm:rounded-[3rem] overflow-hidden shadow-2xl border-[8px] sm:border-[12px] border-white transition-transform duration-700 group-hover:rotate-1">
-                <img src="{{ asset('landing-page/hero.jpeg') }}" alt="K.O.C Hero" class="w-full h-full object-cover">
-                <div
-                  class="absolute top-4 right-4 sm:top-6 sm:right-6 bg-black/80 backdrop-blur-md text-white px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-bold tracking-widest uppercase border border-white/20">
-                  Tested: 500+ Washes
-                </div>
-              </div>
-            </div>
-          </div>
+      {{-- Two Clear Paths --}}
+      <div class="reveal space-y-3">
+       {{-- Path 1: Retail (Shopee) --}}
+       <a href="https://shopee.co.id/" target="_blank" rel="noopener"
+          class="group flex items-center gap-4 p-4 bg-white rounded-2xl border-2 border-orange-100 hover:border-orange-500 transition-all shadow-sm hover:shadow-md">
+        <div class="w-12 h-12 bg-orange-500 rounded-xl flex items-center justify-center text-white">
+         <i data-lucide="shopping-bag" class="w-6 h-6"></i>
         </div>
-      </section>
-
-      <section id="durability" class="py-16 sm:py-24 px-4 sm:px-6 bg-white">
-        <div class="max-w-7xl mx-auto">
-          <div class="grid md:grid-cols-3 gap-4 sm:gap-6">
-            <div
-              class="md:col-span-2 bg-[#f3f4f6] p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] flex flex-col justify-between overflow-hidden relative group">
-              <div class="relative z-10">
-                <h3 class="text-3xl sm:text-4xl font-black italic uppercase tracking-tighter mb-4">Kualitas <br>Tanpa
-                  Kompromi</h3>
-                <p class="max-w-xs text-gray-500 text-xs sm:text-sm leading-relaxed">Jahitan 'Double-Lock' untuk
-                  durabilitas maksimal.</p>
-              </div>
-              <div class="mt-8 sm:mt-12 flex flex-wrap gap-2 sm:gap-4 relative z-10">
-                <span
-                  class="px-3 py-1.5 bg-white rounded-lg text-[8px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm">Anti-Abrasion</span>
-                <span
-                  class="px-3 py-1.5 bg-white rounded-lg text-[8px] sm:text-[10px] font-bold uppercase tracking-widest shadow-sm">Sweat-Wicking</span>
-              </div>
-              <div
-                class="absolute top-0 right-0 w-32 sm:w-64 h-32 sm:h-64 bg-black/5 rounded-full -translate-y-1/2 translate-x-1/2">
-              </div>
-            </div>
-
-            <div
-              class="bg-black p-8 sm:p-12 rounded-[2rem] sm:rounded-[2.5rem] text-white flex flex-col justify-between">
-              <div
-                class="w-10 h-10 sm:w-12 sm:h-12 bg-white/10 rounded-full flex items-center justify-center mb-6 sm:mb-8">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                </svg>
-              </div>
-              <h3 class="text-xl sm:text-2xl font-bold italic uppercase tracking-tighter mb-4 leading-tight">Garansi
-                <br>Durabilitas
-              </h3>
-              <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Garansi 1 tahun untuk setiap produk K.O.C.
-              </p>
-            </div>
-          </div>
+        <div class="flex-1">
+         <div class="font-semibold text-gray-900">Beli Satuan</div>
+         <div class="text-sm text-gray-500">Ready stock via Shopee — Gratis Ongkir</div>
         </div>
-      </section>
+        <i data-lucide="external-link" class="w-5 h-5 text-gray-400 group-hover:text-orange-500"></i>
+       </a>
 
-      <section id="custom" class="py-20 sm:py-32 px-4 sm:px-6 bg-[#111] text-white overflow-hidden relative">
-        <div class="absolute inset-0 opacity-10 pattern-bg invert"></div>
-        <div class="max-w-7xl mx-auto relative z-10">
-          <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div class="order-2 lg:order-1">
-              <div class="grid grid-cols-2 gap-3 sm:gap-4">
-                <div
-                  class="aspect-square bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-3 sm:p-4 hover:bg-white/10 transition-colors cursor-pointer">
-                  <div class="w-full h-full pattern-bg opacity-30 rounded-lg sm:rounded-xl"></div>
-                  <p class="text-[8px] sm:text-[10px] mt-2 sm:mt-4 font-bold tracking-widest text-center uppercase">
-                    Cyber</p>
-                </div>
-                <div
-                  class="aspect-square bg-white/5 rounded-2xl sm:rounded-3xl border border-white/10 p-3 sm:p-4 hover:bg-white/10 transition-colors cursor-pointer mt-6 sm:mt-8">
-                  <div
-                    class="w-full h-full bg-gradient-to-br from-indigo-500 to-purple-500 opacity-30 rounded-lg sm:rounded-xl">
-                  </div>
-                  <p class="text-[8px] sm:text-[10px] mt-2 sm:mt-4 font-bold tracking-widest text-center uppercase">Neon
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="order-1 lg:order-2 space-y-6 sm:space-y-8 text-center lg:text-left">
-              <h2 class="text-4xl sm:text-6xl lg:text-7xl font-black italic uppercase tracking-tighter leading-none">
-                Desain<br /><span class="text-gray-500 text-3xl sm:text-5xl lg:text-7xl">Motif Custom</span></h2>
-              <p class="text-gray-400 text-sm sm:text-lg leading-relaxed max-w-md mx-auto lg:mx-0">Pilih motif eksklusif
-                atau unggah desainmu sendiri dengan teknologi <span
-                  class="text-white font-bold italic">Infinity-Print™</span>.</p>
-              <button
-                class="w-full sm:w-auto px-8 py-4 bg-white text-black rounded-full font-black uppercase text-[10px] sm:text-xs tracking-widest">
-                Mulai Kustomisasi
-              </button>
-            </div>
-          </div>
+       {{-- Path 2: Wholesale (Order Builder) --}}
+       <a href="{{ route('order.builder') }}"
+          class="group flex items-center gap-4 p-4 bg-gray-900 rounded-2xl border-2 border-gray-900 hover:bg-gray-800 transition-all shadow-md hover:shadow-lg">
+        <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-gray-900">
+         <i data-lucide="shirt" class="w-6 h-6"></i>
         </div>
-      </section>
-
-      <section id="collection" class="py-20 sm:py-32 px-4 sm:px-6 bg-[#f8f9fa]">
-        <div class="max-w-7xl mx-auto text-center mb-12 sm:mb-20">
-          <h2 class="text-3xl sm:text-5xl lg:text-6xl font-black italic uppercase tracking-tighter mb-4">Essential Drops
-          </h2>
-          <p class="text-gray-400 text-xs sm:text-sm font-medium">Koleksi dasar dengan kualitas tertinggi.</p>
+        <div class="flex-1">
+         <div class="font-semibold text-white">Pesan Grosir / Custom</div>
+         <div class="text-sm text-gray-400">Min. 12 pcs — Harga lebih hemat</div>
         </div>
+        <i data-lucide="arrow-right" class="w-5 h-5 text-gray-500 group-hover:text-white"></i>
+       </a>
+      </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-12">
-          @foreach(['Endurance Tee' => '249k', 'Titan Shorts' => '299k', 'Armor Hoodie' => '549k'] as $name => $price)
-            <div class="group">
-              <div
-                class="aspect-[3/4] bg-white rounded-[1.5rem] sm:rounded-[2.5rem] mb-6 relative overflow-hidden flex items-center justify-center shadow-sm hover:shadow-xl transition-all duration-500">
-                <div
-                  class="absolute inset-0 flex items-center justify-center font-black text-gray-50 text-6xl sm:text-8xl -rotate-12 select-none pointer-events-none uppercase">
-                  {{ substr($name, 0, 1) }}
-                </div>
-                <button
-                  class="absolute bottom-6 px-6 py-3 bg-black text-white rounded-xl text-[9px] font-bold uppercase tracking-widest opacity-100 lg:opacity-0 lg:group-hover:opacity-100 transition-all">Add
-                  to Bag</button>
-              </div>
-              <div class="px-2 sm:px-4">
-                <h4 class="font-black text-lg sm:text-xl tracking-tight uppercase italic">{{ $name }}</h4>
-                <div class="flex justify-between items-center mt-2">
-                  <p class="text-[8px] sm:text-[10px] text-gray-400 font-bold uppercase tracking-[0.2em]">Eco-Poly
-                    Material</p>
-                  <span class="font-bold text-base sm:text-lg">Rp {{ $price }}</span>
-                </div>
-              </div>
-            </div>
-          @endforeach
-        </div>
-      </section>
+      {{-- Track Order Link --}}
+      <div class="reveal mt-4 text-center lg:text-left">
+       <a href="{{ route('order.tracking') }}" class="text-sm text-gray-500 hover:text-gray-900 underline">
+        Sudah order? Lacak pesanan Anda →
+       </a>
+      </div>
+     </div>
 
-      <footer class="py-12 sm:py-20 px-4 sm:px-6 bg-white border-t border-gray-100">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 border-b border-gray-100 pb-12 sm:pb-20">
-          <div class="col-span-1 md:col-span-2 text-center md:text-left">
-            <div class="text-2xl sm:text-3xl font-black italic tracking-tighter mb-6">K.O.C</div>
-            <p class="max-w-xs mx-auto md:mx-0 text-gray-400 text-xs sm:text-sm leading-relaxed font-medium">
-              Mendefinisikan ulang pakaian olahraga sejak 2024.</p>
-          </div>
-          <div class="text-center md:text-left space-y-4">
-            <h5 class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em]">Links</h5>
-            <ul class="text-xs sm:text-sm text-gray-500 space-y-2 uppercase font-bold tracking-widest">
-              <li><a href="#" class="hover:text-black">Size Guide</a></li>
-              <li><a href="#" class="hover:text-black">Custom</a></li>
-            </ul>
-          </div>
-          <div class="text-center md:text-left space-y-4">
-            <h5 class="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.3em]">Social</h5>
-            <div class="flex justify-center md:justify-start gap-4">
-              <a href="#"
-                class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all italic font-black text-[10px]">Ig</a>
-              <a href="#"
-                class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center hover:bg-black hover:text-white transition-all italic font-black text-[10px]">Tw</a>
-            </div>
-          </div>
+     {{-- Right: Hero Image --}}
+     <div class="reveal order-1 lg:order-2 relative">
+      <div class="relative aspect-square max-w-lg mx-auto lg:ml-auto">
+       <img src="{{ asset('landing-page/hero.jpeg') }}" alt="KOC Apparel" 
+            class="w-full h-full object-cover rounded-3xl shadow-2xl">
+       <div class="absolute -bottom-4 -left-4 bg-white rounded-2xl px-5 py-3 shadow-lg border border-gray-100">
+        <div class="flex items-center gap-3">
+         <div class="w-10 h-10 bg-gray-900 rounded-full flex items-center justify-center">
+          <i data-lucide="star" class="w-5 h-5 text-white"></i>
+         </div>
+         <div>
+          <div class="font-heading font-700 text-sm">Original Design</div>
+          <div class="text-xs text-gray-500">100% Karya Sendiri</div>
+         </div>
         </div>
-        <div
-          class="max-w-7xl mx-auto pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left">
-          <p class="text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">© 2026 K.O.C Athletics.
-          </p>
-          <div class="flex gap-6 sm:gap-8 text-[8px] sm:text-[10px] font-bold uppercase tracking-widest text-gray-400">
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-          </div>
-        </div>
-      </footer>
-
+       </div>
+      </div>
+     </div>
     </div>
-  </body>
-</x-layouts.guest>
+   </div>
+  </section>
+
+  {{-- Marquee --}}
+  <section class="border-y border-gray-200 py-3 bg-white overflow-hidden">
+   <div class="marquee-track whitespace-nowrap">
+    <span class="inline-flex items-center gap-8 px-4 text-sm font-mono text-gray-500">
+     @foreach(['★ ORIGINAL DESIGN', '★ PREMIUM PRINTING', '★ CUSTOM AVAILABLE', '★ PRE-ORDER & SATUAN', '★ MADE IN INDONESIA'] as $item)
+      <span>{{ $item }}</span>
+     @endforeach
+     @foreach(['★ ORIGINAL DESIGN', '★ PREMIUM PRINTING', '★ CUSTOM AVAILABLE', '★ PRE-ORDER & SATUAN', '★ MADE IN INDONESIA'] as $item)
+      <span>{{ $item }}</span>
+     @endforeach
+    </span>
+   </div>
+  </section>
+
+  {{-- BEST COLLECTION --}}
+  <section id="katalog" class="py-20 bg-white">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="reveal flex flex-col md:flex-row md:items-end justify-between gap-4 mb-10">
+     <div>
+      <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">Featured</span>
+      <h2 class="font-heading font-800 text-3xl md:text-4xl mt-1">Koleksi Terbaik</h2>
+     </div>
+     <a href="{{ route('catalog.index') }}" class="text-sm font-medium text-gray-900 hover:text-gray-600 flex items-center gap-1">
+      Lihat Semua <i data-lucide="arrow-right" class="w-4 h-4"></i>
+     </a>
+    </div>
+
+    {{-- Product Grid --}}
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+     @php
+      $featuredProducts = \App\Models\Product::with(['category', 'gallery' => function($q) {
+       $q->orderByDesc('is_primary')->orderBy('sort_order');
+      }])->featured()->take(4)->get();
+     @endphp
+     
+     @forelse($featuredProducts as $index => $product)
+      @php
+       $galleryImage = optional($product->gallery->first())->image_url;
+       $img = $galleryImage ? (\Illuminate\Support\Str::startsWith($galleryImage, 'http')
+        ? $galleryImage
+        : asset('storage/' . preg_replace('/^storage\//', '', $galleryImage)))
+        : null;
+       $firstInventory = \App\Models\Inventory::where('product_id', $product->id)->first();
+       $price = $firstInventory ? $firstInventory->final_price : 0;
+      @endphp
+      
+      <div class="reveal group rounded-2xl overflow-hidden cursor-pointer bg-gray-50" style="animation-delay: {{ $index * 0.1 }}s;">
+       <div class="aspect-[3/4] relative">
+        @if($img)
+         <img src="{{ $img }}" alt="{{ $product->name }}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+        @else
+         <div class="absolute inset-0 flex items-center justify-center text-6xl bg-gray-200 text-gray-400">
+          {{ substr($product->name, 0, 1) }}
+         </div>
+        @endif
+        
+        {{-- Hover Actions --}}
+        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+         <a href="{{ route('catalog.index') }}" class="bg-white text-gray-900 text-sm font-medium px-4 py-2 rounded-full hover:bg-gray-100">
+          Lihat Detail
+         </a>
+        </div>
+       </div>
+       <div class="p-4 bg-white">
+        <span class="text-xs text-gray-500">{{ $product->category->name ?? 'Product' }}</span>
+        <h3 class="font-semibold mt-1 truncate">{{ $product->name }}</h3>
+        <p class="text-sm font-mono text-gray-900 mt-1">
+         {{ $price > 0 ? 'Rp ' . number_format($price, 0, ',', '.') : 'Tanya Harga' }}
+        </p>
+       </div>
+      </div>
+     @empty
+      <div class="col-span-full text-center py-12 text-gray-500">
+       Belum ada produk unggulan.
+      </div>
+     @endforelse
+    </div>
+   </div>
+  </section>
+
+  {{-- HOW IT WORKS --}}
+  <section id="cara-order" class="py-20 bg-gray-50">
+   <div class="max-w-4xl mx-auto px-6">
+    <div class="reveal text-center mb-12">
+     <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">How To Order</span>
+     <h2 class="font-heading font-800 text-3xl md:text-4xl mt-2">Cara Pesan</h2>
+     <p class="text-gray-600 mt-3">2 pilihan, sesuai kebutuhan Anda</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+     {{-- Option 1: Shopee --}}
+     <div class="reveal bg-white rounded-2xl p-6 border border-gray-200">
+      <div class="flex items-center gap-3 mb-4">
+       <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+        <i data-lucide="shopping-cart" class="w-5 h-5 text-orange-600"></i>
+       </div>
+       <div>
+        <h3 class="font-semibold">Beli Satuan</h3>
+        <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full">Ready Stock</span>
+       </div>
+      </div>
+      <ol class="space-y-3 text-sm text-gray-600 mb-6">
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">1</span>
+        <span>Buka toko kami di Shopee</span>
+       </li>
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">2</span>
+        <span>Pilih produk & checkout</span>
+       </li>
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">3</span>
+        <span>Barang dikirim H+1</span>
+       </li>
+      </ol>
+      <a href="https://shopee.co.id/" target="_blank" rel="noopener"
+         class="block w-full py-3 bg-orange-500 text-white text-center rounded-xl font-medium hover:bg-orange-600 transition-colors">
+       Ke Shopee →
+      </a>
+     </div>
+
+     {{-- Option 2: Custom/PO --}}
+     <div class="reveal bg-gray-900 rounded-2xl p-6" style="animation-delay: 0.1s;">
+      <div class="flex items-center gap-3 mb-4">
+       <div class="w-10 h-10 bg-gray-700 rounded-lg flex items-center justify-center">
+        <i data-lucide="shirt" class="w-5 h-5 text-white"></i>
+       </div>
+       <div>
+        <h3 class="font-semibold text-white">Pesan Grosir</h3>
+        <span class="text-xs bg-gray-700 text-gray-300 px-2 py-0.5 rounded-full">Min. 12 pcs</span>
+       </div>
+      </div>
+      <ol class="space-y-3 text-sm text-gray-400 mb-6">
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">1</span>
+        <span>Isi form Order Builder</span>
+       </li>
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">2</span>
+        <span>Deal & DP 50% via WA</span>
+       </li>
+       <li class="flex gap-3">
+        <span class="w-6 h-6 bg-gray-800 rounded-full flex items-center justify-center text-xs font-medium flex-shrink-0">3</span>
+        <span>Produksi 7-14 hari</span>
+       </li>
+      </ol>
+      <a href="{{ route('order.builder') }}"
+         class="block w-full py-3 bg-white text-gray-900 text-center rounded-xl font-medium hover:bg-gray-100 transition-colors">
+       Mulai Custom →
+      </a>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  {{-- WHY CHOOSE US --}}
+  <section id="keunggulan" class="py-20 bg-white">
+   <div class="max-w-5xl mx-auto px-6">
+    <div class="reveal text-center mb-12">
+     <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">Why Us</span>
+     <h2 class="font-heading font-800 text-3xl md:text-4xl mt-2">Kenapa Pilih Kami?</h2>
+    </div>
+    
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
+     @php
+      $features = [
+       ['icon' => 'pen-tool', 'title' => 'Desain Original', 'desc' => '100% desain sendiri'],
+       ['icon' => 'printer', 'title' => 'Premium Print', 'desc' => 'DTG & Sublim anti luntur'],
+       ['icon' => 'shield', 'title' => 'QC Ketat', 'desc' => 'Cek kualitas sebelum kirim'],
+       ['icon' => 'zap', 'title' => 'Proses Cepat', 'desc' => 'PO 7-14 hari kerja'],
+      ];
+     @endphp
+     
+     @foreach($features as $i => $f)
+      <div class="reveal bg-gray-50 rounded-2xl p-6" style="animation-delay: {{ $i * 0.1 }}s;">
+       <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mb-4">
+        <i data-lucide="{{ $f['icon'] }}" class="w-5 h-5 text-white"></i>
+       </div>
+       <h3 class="font-semibold mb-1">{{ $f['title'] }}</h3>
+       <p class="text-sm text-gray-500">{{ $f['desc'] }}</p>
+      </div>
+     @endforeach
+    </div>
+   </div>
+  </section>
+
+  {{-- FINAL CTA --}}
+  <section class="py-20 bg-gray-900 text-white">
+   <div class="max-w-3xl mx-auto px-6 text-center">
+    <div class="reveal">
+     <h2 class="font-heading font-800 text-4xl md:text-5xl mb-4">
+      Siap Tampil <span class="italic text-gray-400">Beda?</span>
+     </h2>
+     <p class="text-gray-400 mb-8 max-w-lg mx-auto">
+      Jadilah bagian dari yang paham bedanya desain original vs mass-produced.
+     </p>
+     <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="{{ route('order.builder') }}" class="pulse-btn inline-flex items-center gap-2 bg-white text-gray-900 font-medium px-8 py-4 rounded-full hover:bg-gray-100 transition-colors">
+       <i data-lucide="shirt" class="w-5 h-5"></i>
+       Pesan Custom Sekarang
+      </a>
+      <a href="{{ route('catalog.index') }}" class="inline-flex items-center gap-2 border border-gray-600 text-white font-medium px-8 py-4 rounded-full hover:bg-gray-800 transition-colors">
+       <i data-lucide="grid" class="w-5 h-5"></i>
+       Lihat Katalog
+      </a>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  {{-- FOOTER --}}
+  <footer class="bg-gray-950 text-gray-400 py-12">
+   <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+     <div class="md:col-span-2">
+      <span class="font-heading font-800 text-2xl text-white">KOC</span>
+      <p class="mt-2 text-sm max-w-xs">Apparel brand dengan desain original. Wear your identity.</p>
+     </div>
+     <div>
+      <h4 class="text-white font-medium text-sm mb-3">Navigasi</h4>
+      <div class="space-y-2 text-sm">
+       <a href="{{ route('catalog.index') }}" class="block hover:text-white transition-colors">Katalog</a>
+       <a href="{{ route('order.builder') }}" class="block hover:text-white transition-colors">Order Custom</a>
+       <a href="{{ route('order.tracking') }}" class="block hover:text-white transition-colors">Lacak Pesanan</a>
+      </div>
+     </div>
+     <div>
+      <h4 class="text-white font-medium text-sm mb-3">Kontak</h4>
+      <div class="space-y-2 text-sm">
+       <a href="https://wa.me/6289513229597" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-white transition-colors">
+        <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+       </a>
+       <a href="https://shopee.co.id/" target="_blank" rel="noopener" class="flex items-center gap-2 hover:text-white transition-colors">
+        <i data-lucide="shopping-bag" class="w-4 h-4"></i> Shopee
+       </a>
+      </div>
+     </div>
+    </div>
+    <div class="border-t border-gray-900 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs">
+     <p>© {{ date('Y') }} KOC Apparel. All rights reserved.</p>
+     <p class="text-gray-600">Made with 🖤 in Indonesia</p>
+    </div>
+   </div>
+  </footer>
+
+ </div>
+
+ <script>
+  function initObserver() {
+   const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+     if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+     }
+    });
+   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+   
+   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  function initNav() {
+   const nav = document.getElementById('navbar');
+   const wrapper = document.getElementById('app-wrapper');
+   if (nav && wrapper) {
+    wrapper.addEventListener('scroll', () => {
+     nav.classList.toggle('nav-scrolled', wrapper.scrollTop > 60);
+    });
+   }
+  }
+
+  function initMobile() {
+   const menu = document.getElementById('mobile-menu');
+   const toggle = document.getElementById('mobile-toggle');
+   const close = document.getElementById('mobile-close');
+   
+   if (toggle && menu) {
+    toggle.addEventListener('click', () => menu.classList.add('open'));
+   }
+   if (close && menu) {
+    close.addEventListener('click', () => menu.classList.remove('open'));
+   }
+   if (menu) {
+    menu.querySelectorAll('.mobile-link').forEach(link => {
+     link.addEventListener('click', () => menu.classList.remove('open'));
+    });
+   }
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+   lucide.createIcons();
+   initObserver();
+   initNav();
+   initMobile();
+  });
+ </script>
+ @livewireScripts
+</body>
+</html>

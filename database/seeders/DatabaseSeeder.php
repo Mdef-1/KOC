@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,7 +14,8 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         // Create admin user
-        $admin = User::firstOrCreate(
+        User::firstOrCreate(
+            ['email' => 'admin@koc.com'],
             [
                 'name' => 'Admin User',
                 'password' => Hash::make('password'),
@@ -24,7 +24,8 @@ class DatabaseSeeder extends Seeder
         );
 
         // Create regular user
-        $user = User::firstOrCreate(
+        User::firstOrCreate(
+            ['email' => 'user@koc.com'],
             [
                 'name' => 'Regular User',
                 'password' => Hash::make('password'),
@@ -35,10 +36,9 @@ class DatabaseSeeder extends Seeder
         // Run seeders in order
         $this->call([
             CategorySeeder::class,
+            SizeSeeder::class,
             ProductSeeder::class,
             InventorySeeder::class,
-            ProductGallerySeeder::class,
-            InquirySeeder::class,
         ]);
     }
 }

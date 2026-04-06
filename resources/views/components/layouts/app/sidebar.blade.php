@@ -42,9 +42,13 @@
                 <flux:navlist.item icon="squares-2x2" :href="route('admin.categories.index')"
                     :current="request()->routeIs('admin.categories.*')" wire:navigate>Categories</flux:navlist.item>
 
-                {{-- Ikon Inquiries: Chat/Envelopes --}}
-                <flux:navlist.item icon="chat-bubble-left-right" :href="route('admin.inquiries.index')"
-                    :current="request()->routeIs('admin.inquiries.*')" wire:navigate>Inquiries</flux:navlist.item>
+                {{-- Ikon Sizes: Ruler/Scale --}}
+                <flux:navlist.item icon="scale" :href="route('admin.sizes.index')"
+                    :current="request()->routeIs('admin.sizes.*')" wire:navigate>Sizes</flux:navlist.item>
+
+                {{-- Ikon Orders: Shopping Cart --}}
+                <flux:navlist.item icon="shopping-cart" :href="route('admin.orders.index')"
+                    :current="request()->routeIs('admin.orders.*')" wire:navigate>Orders</flux:navlist.item>
 
                 {{-- Ikon Product Gallery: Photo/Camera --}}
                 <flux:navlist.item icon="photo" :href="route('admin.product_gallery.index')"
@@ -54,6 +58,11 @@
                 {{-- Ikon Stock Transaction: Arrows Up/Down (Transfer) --}}
                 <flux:navlist.item icon="arrows-right-left" :href="route('admin.stock_transaction.index')"
                     :current="request()->routeIs('admin.stock_transaction.*')" wire:navigate>Stock Transaction
+                </flux:navlist.item>
+
+                {{-- Ikon Featured Products: Star --}}
+                <flux:navlist.item icon="star" :href="route('admin.featured_products.index')"
+                    :current="request()->routeIs('admin.featured_products.*')" wire:navigate>Featured Products
                 </flux:navlist.item>
             </flux:navlist.group>
         </flux:navlist>

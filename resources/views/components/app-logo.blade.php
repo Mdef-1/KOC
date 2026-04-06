@@ -1,3 +1,3 @@
-<div class="ms-1 grid flex-1 text-start text-sm ">
-    <span class="mb-0.5 truncate leading-tight font-semibold">K.O.C</span>
+<div class="ms-1 grid flex-1 text-start">
+    <span class="font-heading font-800 text-2xl tracking-tighter italic">KOC</span>
 </div>

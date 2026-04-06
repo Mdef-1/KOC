@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('inventory', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_id')->unique()->constrained('products')->cascadeOnDelete();
+            $table->foreignId('sizes_id')->unique()->constrained('sizes')->cascadeOnDelete();
             $table->string('sku', 50)->unique()->nullable();
             $table->integer('stock')->default(0);
             $table->decimal('price', 12, 2);

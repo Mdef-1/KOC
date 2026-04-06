@@ -17,16 +17,25 @@ class StockTransaction extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'inventory_id',
-        'user_id',
+        'transaction_id',
+        'product_id',
+        'size_id',
         'quantity',
         'type',
+        'reference_id',
+        'old_stock',
+        'new_stock',
         'description',
     ];
 
-    public function inventory(): BelongsTo
+    public function product(): BelongsTo
     {
-        return $this->belongsTo(Inventory::class);
+        return $this->belongsTo(Product::class);
+    }
+
+    public function size(): BelongsTo
+    {
+        return $this->belongsTo(Size::class);
     }
 
 }

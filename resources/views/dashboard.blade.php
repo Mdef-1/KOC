@@ -24,9 +24,9 @@
                 <div class="text-indigo-600 font-medium">Inventori</div>
                 <div class="text-gray-500 text-sm">Stok & harga</div>
             </a>
-            <a href="{{ route('admin.inquiries.index') }}" class="group bg-white border rounded-lg p-4 hover:shadow-md transition">
-                <div class="text-indigo-600 font-medium">Inquiries</div>
-                <div class="text-gray-500 text-sm">Pertanyaan pelanggan</div>
+            <a href="{{ route('admin.orders.index') }}" class="group bg-white border rounded-lg p-4 hover:shadow-md transition">
+                <div class="text-indigo-600 font-medium">Orders</div>
+                <div class="text-gray-500 text-sm">{{ $stats['pendingOrders'] ?? 0 }} pending</div>
             </a>
             <a href="{{ route('admin.product_gallery.index') }}" class="group bg-white border rounded-lg p-4 hover:shadow-md transition">
                 <div class="text-indigo-600 font-medium">Galeri</div>
@@ -79,15 +79,15 @@
                 </div>
             </div>
 
-            <!-- Total Inquiries Card -->
+            <!-- Total Orders Card -->
             <div class="bg-white p-6 rounded-lg shadow-md flex items-center justify-between">
                 <div>
-                    <h3 class="text-lg font-semibold text-gray-700">Total Inquiries</h3>
-                    <p class="text-3xl font-bold text-gray-900">{{ $stats['totalInquiries'] }}</p>
+                    <h3 class="text-lg font-semibold text-gray-700">Total Orders</h3>
+                    <p class="text-3xl font-bold text-gray-900">{{ $stats['totalOrders'] }}</p>
                 </div>
                 <div class="text-red-500">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                     </svg>
                 </div>
             </div>
@@ -118,28 +118,88 @@
                 </ul>
             </div>
 
-            <!-- Recent Inquiries -->
+            <!-- Recent Orders -->
             <div class="bg-white rounded-lg shadow p-4">
                 <div class="flex items-center justify-between mb-3">
-                    <h3 class="font-semibold text-gray-800">Inquiry Terbaru</h3>
-                    <a href="{{ route('admin.inquiries.index') }}" class="text-sm text-indigo-600 hover:underline">Lihat semua</a>
+                    <h3 class="font-semibold text-gray-800">Order Terbaru</h3>
+                    <a href="{{ route('admin.orders.index') }}" class="text-sm text-indigo-600 hover:underline">Lihat semua</a>
                 </div>
                 <ul class="divide-y">
-                    @forelse(($recentInquiries ?? []) as $inq)
+                    @forelse(($recentOrders ?? []) as $order)
                         <li class="py-3">
                             <div class="flex items-start justify-between">
                                 <div class="min-w-0">
-                                    <div class="font-medium text-gray-900 truncate">{{ $inq->customer_name }}</div>
-                                    <div class="text-xs text-gray-500 truncate">{{ $inq->product->name ?? 'Tanpa produk' }}</div>
+                                    <div class="font-medium text-gray-900 truncate">{{ $order->order_number }}</div>
+                                    <div class="text-xs text-gray-500 truncate">{{ $order->product->name ?? 'Tanpa produk' }} ({{ $order->total_quantity }} pcs)</div>
                                 </div>
-                                <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700">{{ ucfirst($inq->status ?? 'baru') }}</span>
+                                <span class="text-xs px-2 py-1 rounded {{ $order->status_badge }}">{{ $order->status_label }}</span>
                             </div>
-                            @if(!empty($inq->message))
-                                <div class="mt-1 text-sm text-gray-600 truncate">{{ $inq->message }}</div>
-                            @endif
+                            <div class="mt-1 text-sm text-gray-600">{{ $order->customer_name }}</div>
                         </li>
                     @empty
-                        <li class="py-6 text-center text-gray-500">Belum ada inquiry.</li>
+                        <li class="py-6 text-center text-gray-500">Belum ada order.</li>
+                    @endforelse
+                </ul>
+            </div>
+        </div>
+
+        <!-- Product Analytics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <!-- Most Ordered Products -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                        </svg>
+                        <h3 class="font-semibold text-gray-800">Produk Paling Banyak Diorder</h3>
+                    </div>
+                    <a href="{{ route('admin.products.index') }}" class="text-sm text-indigo-600 hover:underline">Lihat semua</a>
+                </div>
+                <ul class="divide-y">
+                    @forelse(($mostOrderedProducts ?? []) as $product)
+                        <li class="py-3 flex items-center justify-between">
+                            <div class="min-w-0">
+                                <div class="font-medium text-gray-900 truncate">{{ $product->name }}</div>
+                                <div class="text-xs text-gray-500">{{ $product->category->name ?? 'Tanpa Kategori' }}</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-gray-500">{{ $product->view_count ?? 0 }} views</span>
+                                <span class="text-xs px-2 py-1 rounded bg-green-100 text-green-700 font-semibold">{{ $product->order_count ?? 0 }} orders</span>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="py-6 text-center text-gray-500">Belum ada data order.</li>
+                    @endforelse
+                </ul>
+            </div>
+
+            <!-- Most Visited Products -->
+            <div class="bg-white rounded-lg shadow p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                        </svg>
+                        <h3 class="font-semibold text-gray-800">Produk Paling Banyak Dikunjungi</h3>
+                    </div>
+                    <a href="{{ route('admin.products.index') }}" class="text-sm text-indigo-600 hover:underline">Lihat semua</a>
+                </div>
+                <ul class="divide-y">
+                    @forelse(($mostVisitedProducts ?? []) as $product)
+                        <li class="py-3 flex items-center justify-between">
+                            <div class="min-w-0">
+                                <div class="font-medium text-gray-900 truncate">{{ $product->name }}</div>
+                                <div class="text-xs text-gray-500">{{ $product->category->name ?? 'Tanpa Kategori' }}</div>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs text-gray-500">{{ $product->order_count ?? 0 }} orders</span>
+                                <span class="text-xs px-2 py-1 rounded bg-blue-100 text-blue-700 font-semibold">{{ $product->view_count ?? 0 }} views</span>
+                            </div>
+                        </li>
+                    @empty
+                        <li class="py-6 text-center text-gray-500">Belum ada data kunjungan.</li>
                     @endforelse
                 </ul>
             </div>

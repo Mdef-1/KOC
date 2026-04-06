@@ -43,8 +43,8 @@ class CatalogPage extends Component
     public function setCategory(string $slug = ''): void
     {
         $this->category = $this->category === $slug ? '' : $slug;
+        
     }
-
     public function openInquiry(int $productId): void
     {
         $this->resetValidation();
@@ -95,8 +95,12 @@ class CatalogPage extends Component
             ->with(['category', 'gallery' => function ($q) {
                 $q->orderByDesc('is_primary')->orderBy('sort_order');
             }])
-            ->leftJoin('inventory', 'inventory.product_id', '=', 'products.id')
-            ->select('products.*', 'inventory.price')
+            ->select('products.*')
+            ->selectSub(function ($query) {
+                $query->from('inventory')
+                    ->selectRaw('MIN(price)')
+                    ->whereColumn('inventory.product_id', 'products.id');
+            }, 'price')
             ->active();
 
         if ($this->search !== '') {

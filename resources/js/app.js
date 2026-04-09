@@ -1,8 +1,6 @@
 import "./catalog";
 import { initElementSdk } from "./element/sdk";
 import Alpine from 'alpinejs';
-import "./catalog";
-import { initElementSdk } from "./element/sdk";
 
 document.addEventListener("DOMContentLoaded", () => {
   initElementSdk();

@@ -13,12 +13,18 @@ return new class extends Migration
     public function up(): void
     {
         // Drop foreign keys first (needed to drop unique indexes)
-        DB::statement('ALTER TABLE inventory DROP FOREIGN KEY IF EXISTS inventory_product_id_foreign');
-        DB::statement('ALTER TABLE inventory DROP FOREIGN KEY IF EXISTS inventory_sizes_id_foreign');
-        
-        // Drop unique indexes
-        DB::statement('ALTER TABLE inventory DROP INDEX IF EXISTS inventory_product_id_unique');
-        DB::statement('ALTER TABLE inventory DROP INDEX IF EXISTS inventory_sizes_id_unique');
+        try {
+    DB::statement('ALTER TABLE inventory DROP FOREIGN KEY inventory_product_id_foreign');
+} catch (\Exception $e) { }
+try {
+    DB::statement('ALTER TABLE inventory DROP FOREIGN KEY inventory_sizes_id_foreign');
+} catch (\Exception $e) { }
+try {
+    DB::statement('ALTER TABLE inventory DROP INDEX inventory_product_id_unique');
+} catch (\Exception $e) { }
+try {
+    DB::statement('ALTER TABLE inventory DROP INDEX inventory_sizes_id_unique');
+} catch (\Exception $e) { }
         
         Schema::table('inventory', function (Blueprint $table) {
             // Add foreign keys back (without unique constraint)

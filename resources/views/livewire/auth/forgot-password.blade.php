@@ -1,4 +1,6 @@
-<x-layouts.auth>
+@extends('layouts.auth')
+
+@section('content')
     <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
 
@@ -28,4 +30,4 @@
             <flux:link :href="route('login')" wire:navigate>{{ __('log in') }}</flux:link>
         </div>
     </div>
-</x-layouts.auth>
+@endsection

@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Inventory;
 use App\Models\Product;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class InventoryTable extends Component
 {
@@ -49,6 +50,12 @@ class InventoryTable extends Component
         $this->resetInputFields();
         $this->product_id = $productId;
         $this->isOpen = true;
+    }
+
+    public function updatedProductId($value)
+    {
+        // Reset size_id when product changes
+        $this->size_id = null;
     }
 
     public function store()
@@ -124,71 +131,82 @@ class InventoryTable extends Component
             'adjustmentNote' => 'nullable|string|max:255',
         ]);
 
-        $inventory = Inventory::findOrFail($this->adjustmentInventoryId);
-        $oldStock = $inventory->stock;
+        try {
+            DB::transaction(function () {
+                $inventory = Inventory::lockForUpdate()->findOrFail($this->adjustmentInventoryId);
+                $oldStock = $inventory->stock;
 
-        if ($this->adjustmentType === 'in') {
-            $inventory->increment('stock', $this->adjustmentQty);
-        } else {
-            if ($inventory->stock < $this->adjustmentQty) {
-                $this->addError('adjustmentQty', 'Stok tidak mencukupi untuk pengurangan.');
-                return;
-            }
-            $inventory->decrement('stock', $this->adjustmentQty);
+                if ($this->adjustmentType === 'out' && $inventory->stock < $this->adjustmentQty) {
+                    throw new \Exception('Stok tidak mencukupi untuk pengurangan.');
+                }
+
+                if ($this->adjustmentType === 'in') {
+                    $inventory->increment('stock', $this->adjustmentQty);
+                } else {
+                    $inventory->decrement('stock', $this->adjustmentQty);
+                }
+
+                $inventory->update(['last_updated' => now()]);
+
+                // Create stock transaction record
+                \App\Models\StockTransaction::create([
+                    'transaction_id' => 'TXN-' . now()->format('YmdHis') . '-' . uniqid() . '-' . $inventory->id,
+                    'product_id' => $inventory->product_id,
+                    'size_id' => $inventory->sizes_id,
+                    'type' => $this->adjustmentType,
+                    'quantity' => $this->adjustmentQty,
+                    'old_stock' => $oldStock,
+                    'new_stock' => $inventory->fresh()->stock,
+                    'reference_id' => $this->adjustmentNote ?: 'Manual Adjustment',
+                    'created_at' => now(),
+                ]);
+            });
+
+            $this->closeStockModal();
+            session()->flash('message', 'Stok berhasil di' . ($this->adjustmentType === 'in' ? 'tambah' : 'kurang') . '.');
+        } catch (\Exception $e) {
+            $this->addError('adjustmentQty', $e->getMessage());
         }
-
-        $inventory->update(['last_updated' => now()]);
-
-        // Create stock transaction record
-        \App\Models\StockTransaction::create([
-            'transaction_id' => 'TXN-' . now()->format('YmdHis') . '-' . uniqid() . '-' . $inventory->id,
-            'product_id' => $inventory->product_id,
-            'size_id' => $inventory->sizes_id,
-            'type' => $this->adjustmentType,
-            'quantity' => $this->adjustmentQty,
-            'old_stock' => $oldStock,
-            'new_stock' => $inventory->fresh()->stock,
-            'reference_id' => $this->adjustmentNote ?: 'Manual Adjustment',
-            'created_at' => now(),
-        ]);
-
-        $this->closeStockModal();
-        session()->flash('message', 'Stok berhasil di' . ($this->adjustmentType === 'in' ? 'tambah' : 'kurang') . '.');
     }
 
     public function quickAdjustStock($id, $amount)
     {
-        $inventory = Inventory::findOrFail($id);
-        $oldStock = $inventory->stock;
+        try {
+            DB::transaction(function () use ($id, $amount) {
+                $inventory = Inventory::lockForUpdate()->findOrFail($id);
+                $oldStock = $inventory->stock;
 
-        if ($amount > 0) {
-            $inventory->increment('stock', $amount);
-            $type = 'in';
-        } else {
-            $deduct = abs($amount);
-            if ($inventory->stock < $deduct) {
-                session()->flash('error', 'Stok tidak mencukupi.');
-                return;
-            }
-            $inventory->decrement('stock', $deduct);
-            $type = 'out';
+                if ($amount > 0) {
+                    $inventory->increment('stock', $amount);
+                    $type = 'in';
+                } else {
+                    $deduct = abs($amount);
+                    if ($inventory->stock < $deduct) {
+                        throw new \Exception('Stok tidak mencukupi.');
+                    }
+                    $inventory->decrement('stock', $deduct);
+                    $type = 'out';
+                }
+
+                $inventory->update(['last_updated' => now()]);
+
+                \App\Models\StockTransaction::create([
+                    'transaction_id' => 'TXN-' . now()->format('YmdHis') . '-' . uniqid() . '-' . $inventory->id,
+                    'product_id' => $inventory->product_id,
+                    'size_id' => $inventory->sizes_id,
+                    'type' => $type,
+                    'quantity' => abs($amount),
+                    'old_stock' => $oldStock,
+                    'new_stock' => $inventory->fresh()->stock,
+                    'reference_id' => 'Quick Adjust',
+                    'created_at' => now(),
+                ]);
+            });
+
+            session()->flash('message', 'Stok berhasil diperbarui.');
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
         }
-
-        $inventory->update(['last_updated' => now()]);
-
-        \App\Models\StockTransaction::create([
-            'transaction_id' => 'TXN-' . now()->format('YmdHis') . '-' . uniqid() . '-' . $inventory->id,
-            'product_id' => $inventory->product_id,
-            'size_id' => $inventory->sizes_id,
-            'type' => $type,
-            'quantity' => abs($amount),
-            'old_stock' => $oldStock,
-            'new_stock' => $inventory->fresh()->stock,
-            'reference_id' => 'Quick Adjust',
-            'created_at' => now(),
-        ]);
-
-        session()->flash('message', 'Stok berhasil diperbarui.');
     }
 
     private function resetInputFields()
@@ -199,13 +217,15 @@ class InventoryTable extends Component
     public function render()
     {
         // Get all inventory items with their relationships, sorted by product name then size
-        $inventoryData = Inventory::with(['product', 'size', 'product.category'])
-            ->whereHas('product', function($q) {
-                $q->where('name', 'like', '%' . $this->search . '%');
+        $inventoryData = Inventory::with(['size', 'product.category'])
+            ->join('products', 'products.id', '=', 'inventory.product_id')
+            ->where(function($query) {
+                $query->where('products.name', 'like', '%' . $this->search . '%')
+                      ->orWhere('inventory.sku', 'like', '%' . $this->search . '%');
             })
-            ->orWhere('sku', 'like', '%' . $this->search . '%')
-            ->orderByRaw('(SELECT name FROM products WHERE products.id = inventory.product_id) ASC')
-            ->orderBy('sizes_id', 'asc')
+            ->orderBy('products.name', 'asc')
+            ->orderBy('inventory.sizes_id', 'asc')
+            ->select('inventory.*') // Prevent column ambiguity
             ->get();
 
         // Group by product
@@ -238,9 +258,27 @@ class InventoryTable extends Component
             ['path' => request()->url()]
         );
 
+        // Get sizes based on selected product's category
+        $sizes = collect();
+        if ($this->product_id) {
+            $product = Product::with('category')->find($this->product_id);
+            if ($product && $product->category_id) {
+                $sizes = \App\Models\Size::where('category_id', $product->category_id)
+                    ->orderBy('label', 'asc')
+                    ->get();
+            } else {
+                // If product has no category, show all sizes
+                $sizes = \App\Models\Size::orderBy('label', 'asc')->get();
+            }
+        } else {
+            // No product selected, show all sizes
+            $sizes = \App\Models\Size::orderBy('label', 'asc')->get();
+        }
+
         return view('livewire.admin.inventory-table', [
             'groupedInventory' => $productsPaginator,
             'expandedProducts' => $this->expandedProducts,
+            'sizes' => $sizes,
         ]);
     }
 }

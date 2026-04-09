@@ -207,6 +207,6 @@ class ProductGallery extends Component
 
         return view('livewire.admin.product-gallery', [
             'products' => $productsQuery->paginate($this->perPage),
-        ])->layout('components.layouts.app');
+        ])->layout('layouts.app');
     }
 }

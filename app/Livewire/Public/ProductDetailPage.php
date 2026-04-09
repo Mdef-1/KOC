@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Public;
 
 use App\Models\Inventory;
 use App\Models\Product;
@@ -45,7 +45,7 @@ class ProductDetailPage extends Component
 
     public function render()
     {
-        return view('livewire.product-detail-page')
-                ->layout('components.layouts.guest'); 
+        return view('livewire.public.product-detail-page')
+                ->layout('layouts.guest'); 
     }
 }

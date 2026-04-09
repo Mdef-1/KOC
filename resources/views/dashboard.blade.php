@@ -103,6 +103,7 @@
                 </div>
                 <ul class="divide-y">
                     @forelse(($recentProducts ?? []) as $product)
+                        @continue(!is_object($product))
                         <li class="py-3 flex items-center justify-between">
                             <div class="min-w-0">
                                 <div class="font-medium text-gray-900 truncate">{{ $product->name }}</div>
@@ -126,6 +127,7 @@
                 </div>
                 <ul class="divide-y">
                     @forelse(($recentOrders ?? []) as $order)
+                        @continue(!is_object($order))
                         <li class="py-3">
                             <div class="flex items-start justify-between">
                                 <div class="min-w-0">
@@ -158,6 +160,7 @@
                 </div>
                 <ul class="divide-y">
                     @forelse(($mostOrderedProducts ?? []) as $product)
+                        @continue(!is_object($product))
                         <li class="py-3 flex items-center justify-between">
                             <div class="min-w-0">
                                 <div class="font-medium text-gray-900 truncate">{{ $product->name }}</div>
@@ -188,6 +191,7 @@
                 </div>
                 <ul class="divide-y">
                     @forelse(($mostVisitedProducts ?? []) as $product)
+                        @continue(!is_object($product))
                         <li class="py-3 flex items-center justify-between">
                             <div class="min-w-0">
                                 <div class="font-medium text-gray-900 truncate">{{ $product->name }}</div>

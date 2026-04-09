@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Public;
 
 use App\Models\Order;
 use Livewire\Component;
@@ -23,9 +23,12 @@ class OrderTracking extends Component
         $this->searched = true;
         $this->error = '';
 
+        // Escape special LIKE characters to prevent unexpected matches
+        $escapedPhone = str_replace(['%', '_'], ['\%', '\_'], $this->phoneNumber);
+
         // Search in orders table
         $foundOrder = Order::where('order_number', $this->orderNumber)
-            ->where('customer_contact', 'like', '%' . $this->phoneNumber . '%')
+            ->where('customer_contact', 'like', '%' . $escapedPhone . '%')
             ->first();
 
         if ($foundOrder) {
@@ -65,6 +68,6 @@ class OrderTracking extends Component
 
     public function render()
     {
-        return view('livewire.order-tracking')->layout('components.layouts.guest');
+        return view('livewire.public.order-tracking')->layout('layouts.guest');
     }
 }

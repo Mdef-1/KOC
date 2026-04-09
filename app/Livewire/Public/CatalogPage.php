@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Public;
 
 use App\Models\Category;
 use App\Models\Product;
@@ -10,7 +10,7 @@ use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-#[Layout('components.layouts.guest')]
+#[Layout('layouts.guest')]
 class CatalogPage extends Component
 {
     use WithPagination;
@@ -49,7 +49,9 @@ class CatalogPage extends Component
     {
         $this->resetValidation();
         $this->selectedProductId = $productId;
-        $this->selectedProduct = \App\Models\Product::find($productId);
+        $this->selectedProduct = \App\Models\Product::with(['gallery' => function ($q) {
+            $q->orderByDesc('is_primary')->orderBy('sort_order');
+        }])->find($productId);
         $this->customer_name = '';
         $this->customer_contact = '';
         $this->message = '';
@@ -132,7 +134,7 @@ class CatalogPage extends Component
             }])->find($this->selectedProductId);
         }
 
-        return view('livewire.catalog-page', [
+        return view('livewire.public.catalog-page', [
             'title' => 'Katalog Produk • K.O.C',
             'products' => $products,
             'categories' => $categories,

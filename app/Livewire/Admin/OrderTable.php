@@ -136,6 +136,6 @@ class OrderTable extends Component
         return view('livewire.admin.order-table', [
             'orders' => $orders,
             'statuses' => $statuses,
-        ])->layout('components.layouts.app');
+        ])->layout('layouts.app');
     }
 }

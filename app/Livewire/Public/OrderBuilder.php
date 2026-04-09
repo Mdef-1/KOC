@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Public;
 
 use App\Models\Category;
 use App\Models\Product;
@@ -239,7 +239,7 @@ class OrderBuilder extends Component
         
         // Dispatch event to open WhatsApp
         $waUrl = "https://wa.me/6289513229597?text=" . urlencode($waMessage);
-        $this->dispatch('openWhatsApp', url: $waUrl);
+        $this->dispatch('open-whatsapp', url: $waUrl);
     }
     
     public function resetForm()
@@ -265,9 +265,9 @@ class OrderBuilder extends Component
                 ->get()
             : collect();
         
-        return view('livewire.order-builder', [
+        return view('livewire.public.order-builder', [
             'categories' => $categories,
             'products' => $products,
-        ])->layout('components.layouts.guest');
+        ])->layout('layouts.guest');
     }
 }

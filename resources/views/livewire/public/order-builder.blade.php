@@ -212,7 +212,7 @@
                         </button>
                     @endif
                 </div>
-                <p class="text-gray-600 mb-6">Minimum order {{ \App\Livewire\OrderBuilder::MOQ }} pcs</p>
+                <p class="text-gray-600 mb-6">Minimum order {{ \App\Livewire\Public\OrderBuilder::MOQ }} pcs</p>
                 
                 {{-- Size Quantity Indicator --}}
                 @if($totalQty > 0)
@@ -379,11 +379,7 @@
     {{-- Success Modal --}}
     @if($showSummary)
         <div class="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4" wire:click.self="resetForm">
-            <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center" x-data x-init="
-                @this.on('openWhatsApp', (event) => { 
-                    setTimeout(() => window.open(event.url, '_blank'), 500);
-                })
-            ">
+            <div class="bg-white rounded-2xl max-w-md w-full p-6 text-center" x-data @open-whatsapp.window="setTimeout(() => window.open($event.detail.url, '_blank'), 500)">
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>

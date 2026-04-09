@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" >
     <head>
         @include('partials.head')
-        @livewireStyles
     </head>
     <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
         <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
@@ -11,11 +10,10 @@
                     <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
                 </a>
                 <div class="flex flex-col gap-6">
-                    @yield('content')
+                    {{ $slot }}
                 </div>
             </div>
         </div>
         @fluxScripts
-        @livewireScripts
     </body>
 </html>

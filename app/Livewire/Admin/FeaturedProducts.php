@@ -101,6 +101,6 @@ class FeaturedProducts extends Component
         return view('livewire.admin.featured-products', [
             'products' => $products,
             'featuredCount' => $featuredCount,
-        ])->layout('components.layouts.app');
+        ])->layout('layouts.app');
     }
 }

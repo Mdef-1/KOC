@@ -42,22 +42,23 @@ class Product extends Model
         return $query->where('is_featured', true)->orderBy('featured_order')->orderBy('id');
     }
 
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
     public function gallery(): HasMany
     {
         return $this->hasMany(ProductGalleryModel::class);
     }
-    
+
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
+    }
 
     public function inquiries(): HasMany
     {
         return $this->hasMany(Inquiry::class);
-    }
-
-    
-
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class);
     }
 }

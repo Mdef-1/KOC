@@ -1,8 +1,9 @@
 <?php
 
-use App\Livewire\CatalogPage;
-use App\Livewire\OrderBuilder;
-use App\Livewire\OrderTracking;
+use App\Livewire\Public\CatalogPage;
+use App\Livewire\Public\OrderBuilder;
+use App\Livewire\Public\OrderTracking;
+use App\Livewire\Public\ProductDetailPage;
 use App\Livewire\Admin\CategoryTable;
 use App\Livewire\Admin\SizeTable;
 use App\Livewire\Admin\ProductTable;
@@ -10,7 +11,6 @@ use App\Livewire\Admin\OrderTable;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Admin\ProductGallery;
 use App\Livewire\Admin\StockTransactionTable;
-use App\Livewire\ProductDetailPage;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\InventoryTable;
 use App\Livewire\Admin\UserTable;

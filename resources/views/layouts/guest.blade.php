@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="id" class="scroll-smooth">
+<html lang="id" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,15 +20,9 @@
     {{-- External SDK --}}
     <script src="/_sdk/element_sdk.js" defer></script>
     <script src="/_sdk/data_sdk.js" defer></script>
-
-    <style>
-        html, body { height: auto !important; overflow: visible !important; overflow-y: scroll !important; }
-        body { min-height: 100vh !important; position: relative !important; }
-        * { overflow-x: visible !important; }
-    </style>
 </head>
 
-<body class="antialiased">
+<body class="h-full smooth-scroll overflow-auto">
 
     @livewire('public.navbar')
     <div class="h-16 sm:h-20"></div>

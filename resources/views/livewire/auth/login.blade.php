@@ -1,5 +1,8 @@
-<x-layouts.auth>
-    <div class="flex flex-col gap-6">
+@extends('layouts.auth')
+
+@section('content')
+    <div class="w-full max-w-md mx-auto">
+        <div class="flex flex-col gap-6">
         <x-auth-header :title="__('Log in to your account')" :description="__('Enter your email and password below to log in')" />
 
         <!-- Session Status -->
@@ -47,5 +50,7 @@
                 </flux:button>
             </div>
         </form>
+        </div>
     </div>
-</x-layouts.auth>
+
+@endsection

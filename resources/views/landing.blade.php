@@ -33,7 +33,7 @@
  <div id="app-wrapper" class="w-full h-full overflow-auto bg-white text-gray-900 relative z-0">
   
   {{-- Navbar --}}
-  @livewire('navbar')
+  @livewire('public.navbar')
   <div class="h-16 sm:h-20"></div>
 
   {{-- HERO SECTION --}}

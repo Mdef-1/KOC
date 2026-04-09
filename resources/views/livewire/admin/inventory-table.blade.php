@@ -198,14 +198,12 @@
 
     {{-- Modal Create/Edit --}}
     @if($isOpen)
-        <div class="fixed inset-0 z-50 overflow-y-auto">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-black/45 transition-opacity" wire:click="$set('isOpen', false)"></div>
-
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
+        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ open: true }" x-show="open" x-on:keydown.escape.window="open = false; $wire.$set('isOpen', false)">
+            <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
+                <div class="fixed inset-0 bg-black/50 transition-opacity" wire:click="$set('isOpen', false)"></div>
 
                 <div
-                    class="relative inline-block w-full max-w-4xl overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
+                    class="relative w-full max-w-4xl mx-auto overflow-hidden text-left bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-medium text-gray-900">{{ $selected_id ? 'Edit' : 'Add New' }} Inventory
@@ -226,30 +224,25 @@
 
                             <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
 
-                                {{-- SELECT2 PRODUCT SELECTION --}}
-                                <div class="sm:col-span-2" wire:ignore x-data="{ 
-                        initSelect2() {
-                            let el = $(this.$refs.prodSelect);
-                            el.select2({
-                                placeholder: 'Select a product',
-                                allowClear: true,
-                                width: '100%',
-                                dropdownParent: el.parent()
-                            }).on('change', (e) => {
-                                @this.set('product_id', e.target.value);
-                            });
-                        }
-                    }" x-init="initSelect2(); $watch('$wire.product_id', value => $( $refs.prodSelect ).val(value).trigger('change'))">
-
+                                {{-- PRODUCT SELECTION --}}
+                                <div class="sm:col-span-2" wire:key="product-select-{{ $isOpen }}">
                                     <label class="block text-sm font-medium text-gray-700">Product <span
                                             class="text-red-500">*</span></label>
-                                    <select x-ref="prodSelect"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                                    <select wire:model.live="product_id"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full">
                                         <option value="">Select a product</option>
-                                        @foreach(\App\Models\Product::all() as $product)
+                                        @foreach(\App\Models\Product::with('category')->orderBy('name', 'asc')->get() as $product)
                                             <option value="{{ $product->id }}">{{ $product->name }}</option>
                                         @endforeach
                                     </select>
+                                    @if($product_id)
+                                        @php
+                                            $selectedProduct = \App\Models\Product::with('category')->find($product_id);
+                                        @endphp
+                                        @if($selectedProduct && $selectedProduct->category)
+                                            <p class="mt-1 text-xs text-blue-600">Kategori: {{ $selectedProduct->category->name }}</p>
+                                        @endif
+                                    @endif
                                     @error('product_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                                 </div>
 
@@ -274,29 +267,26 @@
                                 </div>
 
                                 {{-- NEW: SIZE SELECTION --}}
-                                <div class="sm:col-span-2" wire:ignore x-data="{ 
-                        initSelect2() {
-                            let el = $(this.$refs.sizeSelect);
-                            el.select2({
-                                placeholder: 'Select a size',
-                                allowClear: true,
-                                width: '100%',
-                                dropdownParent: el.parent()
-                            }).on('change', (e) => {
-                                @this.set('size_id', e.target.value);
-                            });
-                        }
-                    }" x-init="initSelect2(); $watch('$wire.size_id', value => $( $refs.sizeSelect ).val(value).trigger('change'))">
-
+                                <div class="sm:col-span-2" wire:key="size-select-{{ $product_id }}">
                                     <label class="block text-sm font-medium text-gray-700">Size <span
                                             class="text-red-500">*</span></label>
-                                    <select x-ref="sizeSelect"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm">
+                                    <select wire:model="size_id"
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full">
                                         <option value="">Select a size</option>
-                                        @foreach(\App\Models\Size::all() as $size)
+                                        @forelse($sizes as $size)
                                             <option value="{{ $size->id }}">{{ $size->label }} ({{ $size->width }}x{{ $size->length }})</option>
-                                        @endforeach
+                                        @empty
+                                            <option value="" disabled>Belum ada size untuk kategori ini</option>
+                                        @endforelse
                                     </select>
+                                    @if($product_id)
+                                        @php
+                                            $selectedProduct = \App\Models\Product::with('category')->find($product_id);
+                                        @endphp
+                                        @if($selectedProduct && $selectedProduct->category)
+                                            <p class="mt-1 text-xs text-gray-500">Menampilkan size untuk kategori: <span class="font-medium text-blue-600">{{ $selectedProduct->category->name }}</span></p>
+                                        @endif
+                                    @endif
                                     @error('size_id') <p class="mt-1 text-sm text-red-600">{{ $message }}</p> @enderror
                                 </div>
 
@@ -369,11 +359,10 @@
     @endif
     {{-- Stock Adjustment Modal --}}
     @if($isStockModalOpen)
-        <div class="fixed inset-0 z-50 overflow-y-auto">
-            <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
-                <div class="fixed inset-0 bg-black/45 transition-opacity" wire:click="closeStockModal"></div>
-                <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
-                <div class="relative inline-block w-full max-w-md overflow-hidden text-left align-middle transition-all transform bg-white rounded-lg shadow-xl">
+        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ open: true }" x-show="open" x-on:keydown.escape.window="open = false; $wire.closeStockModal()">
+            <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
+                <div class="fixed inset-0 bg-black/50 transition-opacity" wire:click="closeStockModal"></div>
+                <div class="relative w-full max-w-md mx-auto overflow-hidden text-left bg-white rounded-lg shadow-xl max-h-[90vh] overflow-y-auto">
                     <div class="px-6 py-4 border-b border-gray-200">
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-medium text-gray-900">Penyesuaian Stok</h3>

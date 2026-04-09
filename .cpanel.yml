@@ -1,4 +1,4 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/username/public_html/
+    - export DEPLOYPATH=/home/kocorigi/public_html/
     - /bin/cp -R * $DEPLOYPATH

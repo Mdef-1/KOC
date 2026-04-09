@@ -101,6 +101,12 @@ class CatalogPage extends Component
                     ->selectRaw('MIN(price)')
                     ->whereColumn('inventory.product_id', 'products.id');
             }, 'price')
+            // Add subquery to check total stock
+            ->selectSub(function ($query) {
+                $query->from('inventory')
+                    ->selectRaw('COALESCE(SUM(stock), 0)')
+                    ->whereColumn('inventory.product_id', 'products.id');
+            }, 'total_stock')
             ->active();
 
         if ($this->search !== '') {
@@ -111,7 +117,11 @@ class CatalogPage extends Component
             $query->whereRelation('category', 'slug', $this->category);
         }
 
-        $products = $query->orderByDesc('products.id')->paginate($this->perPage);
+        // Sort: in-stock first (total_stock > 0), then out-of-stock, then by id desc
+        $products = $query
+            ->orderByRaw('CASE WHEN (SELECT COALESCE(SUM(stock), 0) FROM inventory WHERE inventory.product_id = products.id) > 0 THEN 0 ELSE 1 END')
+            ->orderByDesc('products.id')
+            ->paginate($this->perPage);
 
         $categories = Category::query()->orderBy('name')->get(['id', 'name', 'slug']);
 

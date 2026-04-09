@@ -42,11 +42,19 @@ x-init="initNavbar()">
                                 x-transition
                                 class="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>
                         </a>
-                        <a href="#custom" 
-                            :class="activeSection === 'custom' ? 'text-black' : 'hover:text-black transition-colors'"
+                        <a href="#keunggulan" 
+                            :class="activeSection === 'keunggulan' ? 'text-black' : 'hover:text-black transition-colors'"
                             class="relative py-2">
-                            Custom
-                            <span x-show="activeSection === 'custom'" 
+                            Keunggulan
+                            <span x-show="activeSection === 'keunggulan'" 
+                                x-transition
+                                class="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>
+                        </a>
+                        <a href="#faq" 
+                            :class="activeSection === 'faq' ? 'text-black' : 'hover:text-black transition-colors'"
+                            class="relative py-2">
+                            FAQ
+                            <span x-show="activeSection === 'faq'" 
                                 x-transition
                                 class="absolute bottom-0 left-0 w-full h-0.5 bg-black"></span>
                         </a>
@@ -95,11 +103,26 @@ x-init="initNavbar()">
             <nav class="flex flex-col gap-8 text-xs font-black uppercase tracking-[0.4em]">
                 <a href="{{ route('home') }}"
                     class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Home</a>
-                <a href="{{ route('catalog.index') }}"
+                <a href="#katalog" @click="mobileMenuOpen = false"
                     class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Katalog</a>
-                <a href="#" class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Periksa Size</a>
-                <a href="#" class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Custom Gear</a>
+                <a href="#cara-order" @click="mobileMenuOpen = false"
+                    class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Cara Order</a>
+                <a href="#keunggulan" @click="mobileMenuOpen = false"
+                    class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">Keunggulan</a>
+                <a href="#faq" @click="mobileMenuOpen = false"
+                    class="py-2 border-b border-gray-50 hover:text-gray-500 transition-colors">FAQ</a>
             </nav>
+
+            {{-- CTA to Full Catalog --}}
+            <div class="mt-8 mb-8">
+                <a href="{{ route('catalog.index') }}" @click="mobileMenuOpen = false"
+                   class="flex items-center justify-center gap-3 w-full py-4 bg-gray-900 text-white rounded-2xl text-xs font-bold uppercase tracking-widest hover:bg-gray-800 transition-colors">
+                    <span>Lihat Semua Produk</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                    </svg>
+                </a>
+            </div>
 
             <div class="mt-auto">
                 <p class="text-[8px] font-bold text-gray-300 uppercase tracking-widest italic">© 2026 KOC Athletics
@@ -132,7 +155,7 @@ x-init="initNavbar()">
                         });
                     }, { threshold: 0.3, rootMargin: '-100px 0px -50% 0px' });
 
-                    ['katalog', 'cara-order', 'keunggulan', 'custom', 'order-now'].forEach(id => {
+                    ['katalog', 'cara-order', 'keunggulan', 'faq'].forEach(id => {
                         const el = document.getElementById(id);
                         if (el) observer.observe(el);
                     });

@@ -7,6 +7,8 @@ use App\Models\Inventory;
 use App\Models\Product;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Support\Facades\Auth;
 
 class InventoryTable extends Component
 {
@@ -50,6 +52,7 @@ class InventoryTable extends Component
         $this->resetInputFields();
         $this->product_id = $productId;
         $this->isOpen = true;
+        $this->dispatch('refresh');
     }
 
     public function updatedProductId($value)
@@ -102,8 +105,12 @@ class InventoryTable extends Component
 
     public function delete($id)
     {
-        Inventory::find($id)->delete();
-        session()->flash('message', 'Item Deleted Successfully.');
+        try {
+            Inventory::findOrFail($id)->delete();
+            session()->flash('message', 'Item Deleted Successfully.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error deleting item: ' . $e->getMessage());
+        }
     }
 
     public function openStockModal($id)
@@ -125,6 +132,14 @@ class InventoryTable extends Component
 
     public function adjustStock()
     {
+        // Rate limit: max 5 adjustments per minute per user
+        $key = 'adjust-stock:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 5)) {
+            $this->addError('adjustmentQty', 'Terlalu banyak perubahan stok. Coba lagi dalam ' . RateLimiter::availableIn($key) . ' detik.');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         $this->validate([
             'adjustmentQty' => 'required|integer|min:1',
             'adjustmentType' => 'required|in:in,out',
@@ -171,6 +186,14 @@ class InventoryTable extends Component
 
     public function quickAdjustStock($id, $amount)
     {
+        // Rate limit: max 10 quick adjustments per minute per user
+        $key = 'quick-adjust-stock:' . Auth::id();
+        if (RateLimiter::tooManyAttempts($key, 10)) {
+            session()->flash('error', 'Terlalu banyak perubahan stok cepat. Coba lagi nanti.');
+            return;
+        }
+        RateLimiter::hit($key, 60);
+
         try {
             DB::transaction(function () use ($id, $amount) {
                 $inventory = Inventory::lockForUpdate()->findOrFail($id);
@@ -216,8 +239,9 @@ class InventoryTable extends Component
 
     public function render()
     {
-        // Get all inventory items with their relationships, sorted by product name then size
+        // ERROR: Undefined variable $searchTerm (should be $this->search)
         $inventoryData = Inventory::with(['size', 'product.category'])
+            ->where('products.name', 'like', '%' . $this->search . '%')
             ->join('products', 'products.id', '=', 'inventory.product_id')
             ->where(function($query) {
                 $query->where('products.name', 'like', '%' . $this->search . '%')

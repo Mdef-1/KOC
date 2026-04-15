@@ -13,6 +13,7 @@ class Order extends Model
     protected $fillable = [
         'order_number',
         'product_id',
+        'material_id',
         'customer_name',
         'customer_contact',
         'customer_address',
@@ -40,6 +41,11 @@ class Order extends Model
     public function product(): BelongsTo
     {
         return $this->belongsTo(Product::class);
+    }
+
+    public function material(): BelongsTo
+    {
+        return $this->belongsTo(Material::class);
     }
 
     // Status badges for UI

@@ -47,7 +47,7 @@ class OrderTable extends Component
     }
 
     public function openEditModal($orderId)
-    {
+    { 
         $this->editingOrder = Order::with('product')->find($orderId);
         if ($this->editingOrder) {
             $this->status = $this->editingOrder->status;

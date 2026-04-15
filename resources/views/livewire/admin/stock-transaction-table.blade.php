@@ -1,8 +1,8 @@
 <div class="p-6 bg-white rounded-lg shadow">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Stock Transactions</h2>
-        <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors">
+        <button type="button" wire:click="create"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors cursor-pointer touch-manipulation">
             Record Transaction
         </button>
     </div>
@@ -89,7 +89,7 @@
 
             <!-- Reset Button -->
             <div class="flex items-end">
-                <button wire:click="resetFilters" class="w-full py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-lg transition-colors">
+                <button type="button" wire:click="resetFilters" class="w-full py-2 px-4 bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm font-medium rounded-lg transition-colors cursor-pointer touch-manipulation">
                     Reset Filters
                 </button>
             </div>
@@ -211,10 +211,10 @@
                         </td>
                         <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
                             @if($showTrashed)
-                                <button wire:click="confirmRestore({{ $trx->id }})" class="text-green-600 hover:text-green-900">Restore</button>
+                                <button type="button" wire:key="restore-{{ $trx->id }}" wire:click="restore({{ $trx->id }})" class="text-green-600 hover:text-green-900 cursor-pointer touch-manipulation">Restore</button>
                             @else
-                                <button wire:click="edit({{ $trx->id }})" class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                <button wire:click="confirmDelete({{ $trx->id }})" class="text-red-600 hover:text-red-900">Delete</button>
+                                <button type="button" wire:click="edit({{ $trx->id }})" class="text-indigo-600 hover:text-indigo-900 cursor-pointer touch-manipulation">Edit</button>
+                                <button type="button" wire:click="confirmDelete({{ $trx->id }})" class="text-red-600 hover:text-red-900 cursor-pointer touch-manipulation">Delete</button>
                             @endif
                         </td>
                     </tr>
@@ -290,8 +290,15 @@
 
                         <div class="mt-6 flex justify-end space-x-3">
                             <button type="button" wire:click="$set('isOpen', false)"
-                                class="bg-white border px-4 py-2 rounded-md text-sm">Cancel</button>
-                            <button type="submit" class="bg-blue-600 px-4 py-2 rounded-md text-sm text-white">Save Transaction</button>
+                                class="bg-white border px-4 py-2 rounded-md text-sm cursor-pointer touch-manipulation">Cancel</button>
+                            <button type="submit"
+                                class="bg-blue-600 px-4 py-2 rounded-md text-sm text-white cursor-pointer touch-manipulation inline-flex items-center justify-center w-[160px]">
+                                <span wire:loading.remove>Save Transaction</span>
+                                <span wire:loading class="inline-flex items-center gap-1">
+                                    <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                    Saving...
+                                </span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -323,13 +330,16 @@
 
                     <div class="flex justify-center space-x-3">
                         <button type="button" wire:click="closeConfirm"
-                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors">
+                            class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 transition-colors cursor-pointer touch-manipulation">
                             Batal
                         </button>
-                        <button type="button" wire:click="executeConfirm" wire:loading.attr="disabled"
-                            class="px-4 py-2 text-sm font-medium text-white rounded-md transition-colors {{ $confirmAction === 'delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
-                            <span wire:loading.remove wire:target="executeConfirm">Ya, Lanjutkan</span>
-                            <span wire:loading wire:target="executeConfirm">Memproses...</span>
+                        <button type="button" wire:click="executeConfirm"
+                            class="px-4 py-2 text-sm font-medium text-white rounded-md transition-colors cursor-pointer touch-manipulation {{ $confirmAction === 'delete' ? 'bg-red-600 hover:bg-red-700' : 'bg-green-600 hover:bg-green-700' }}">
+                            <span wire:loading.remove>Ya, Lanjutkan</span>
+                            <span wire:loading class="inline-flex items-center gap-1">
+                                <svg class="animate-spin h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                                Memproses...
+                            </span>
                         </button>
                     </div>
                 </div>
@@ -337,14 +347,4 @@
         </div>
     @endif
 
-    <!-- Modal Loading -->
-    <div wire:loading.flex wire:target="executeConfirm, updatingSearch, updatingProductFilter, updatingSizeFilter, updatingTypeFilter, updatingDateFrom, updatingDateTo, updatingReferenceFilter, updatingShowTrashed, sortBy, resetFilters" class="fixed inset-0 z-50 items-center justify-center bg-black/30">
-        <div class="bg-white rounded-lg shadow-xl p-6 flex flex-col items-center">
-            <svg class="animate-spin h-8 w-8 text-blue-600 mb-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <span class="text-sm font-medium text-gray-700">Loading...</span>
-        </div>
-    </div>
 </div>

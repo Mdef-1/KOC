@@ -2,8 +2,8 @@
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Product Management</h2>
-        <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+        <button type="button" wire:click="create"
+            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors cursor-pointer touch-manipulation">
             Add New Product
         </button>
     </div>
@@ -60,8 +60,8 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
-                                <button wire:click="edit({{ $product->id }})" class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                <button wire:click="delete({{ $product->id }})" onclick="confirm('Delete this product?') || event.stopImmediatePropagation()" class="text-red-600 hover:text-red-900">Delete</button>
+                                <button type="button" wire:click="edit({{ $product->id }})" class="text-indigo-600 hover:text-indigo-900 cursor-pointer touch-manipulation">Edit</button>
+                                <button type="button" wire:key="delete-{{ $product->id }}" wire:click="delete({{ $product->id }})" onclick="return confirm('Delete this product?')" class="text-red-600 hover:text-red-900 cursor-pointer touch-manipulation">Delete</button>
                             </td>
                         </tr>
                     @endforeach
@@ -164,10 +164,10 @@
 
                         {{-- Footer --}}
                         <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-lg border-t border-gray-100">
-                            <button type="button" wire:click="$set('isOpen', false)" 
-                                class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">Cancel</button>
-                            <button type="submit" 
-                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+                            <button type="button" wire:click="$set('isOpen', false)"
+                                class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors cursor-pointer touch-manipulation">Cancel</button>
+                            <button type="submit"
+                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors cursor-pointer touch-manipulation">
                                 {{ $selected_id ? 'Update' : 'Create' }}
                             </button>
                         </div>

@@ -11,6 +11,7 @@ use App\Livewire\Admin\OrderTable;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Livewire\Admin\ProductGallery;
 use App\Livewire\Admin\StockTransactionTable;
+use App\Livewire\Admin\MaterialTable;
 use Illuminate\Support\Facades\Route;
 use App\Livewire\Admin\InventoryTable;
 use App\Livewire\Admin\UserTable;
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('products', ProductTable::class)->name('admin.products.index');
     Volt::route('categories', CategoryTable::class)->name('admin.categories.index');
     Volt::route('sizes', SizeTable::class)->name('admin.sizes.index');
+    Volt::route('materials', MaterialTable::class)->name('admin.materials.index');
     Volt::route('orders', OrderTable::class)->name('admin.orders.index');
     Volt::route('User', UserTable::class)->name('admin.user.index');
     Volt::route('product_gallery', ProductGallery::class)->name('admin.product_gallery.index');

@@ -41,13 +41,15 @@
                     <label class="block text-sm font-medium text-gray-700 mb-3">Kategori</label>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
                         @foreach($categories as $category)
-                            <button wire:click="$set('selectedCategory', {{ $category->id }})"
-                                    class="p-4 rounded-xl border-2 text-left transition-all
-                                        {{ $selectedCategory == $category->id 
-                                            ? 'border-black bg-black text-white' 
+                            <button type="button"
+                                    wire:key="cat-{{ $category->id }}"
+                                    wire:click="$set('selectedCategory', {{ $category->id }})"
+                                    class="p-4 rounded-xl border-2 text-left transition-all cursor-pointer touch-manipulation
+                                        {{ $selectedCategory == $category->id
+                                            ? 'border-black bg-black text-white'
                                             : 'border-gray-200 hover:border-gray-300' }}">
-                                <div class="font-medium">{{ $category->name }}</div>
-                                <div class="text-xs {{ $selectedCategory == $category->id ? 'text-gray-300' : 'text-gray-500' }}">
+                                <div class="font-medium pointer-events-none">{{ $category->name }}</div>
+                                <div class="text-xs {{ $selectedCategory == $category->id ? 'text-gray-300' : 'text-gray-500' }} pointer-events-none">
                                     {{ $category->sizes->count() }} size tersedia
                                 </div>
                             </button>
@@ -61,14 +63,16 @@
                         <label class="block text-sm font-medium text-gray-700 mb-3">Produk</label>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
                             @foreach($products as $product)
-                                <button wire:click="$set('selectedProduct', {{ $product->id }})"
-                                        class="relative rounded-xl border-2 overflow-hidden transition-all
-                                            {{ $selectedProduct == $product->id 
-                                                ? 'border-black ring-2 ring-black/10' 
+                                <button type="button"
+                                        wire:key="prod-{{ $product->id }}"
+                                        wire:click="$set('selectedProduct', {{ $product->id }})"
+                                        class="relative rounded-xl border-2 overflow-hidden transition-all cursor-pointer touch-manipulation
+                                            {{ $selectedProduct == $product->id
+                                                ? 'border-black ring-2 ring-black/10'
                                                 : 'border-gray-200 hover:border-gray-300' }}">
-                                    <div class="aspect-square bg-gray-100">
+                                    <div class="aspect-square bg-gray-100 pointer-events-none">
                                         @if($product->gallery->first())
-                                            <img src="{{ asset('storage/' . $product->gallery->first()->image_url) }}" 
+                                            <img src="{{ asset('storage/' . $product->gallery->first()->image_url) }}"
                                                  class="w-full h-full object-cover">
                                         @else
                                             <div class="w-full h-full flex items-center justify-center text-2xl font-bold text-gray-400">
@@ -76,7 +80,7 @@
                                             </div>
                                         @endif
                                     </div>
-                                    <div class="p-3 text-left">
+                                    <div class="p-3 text-left pointer-events-none">
                                         <div class="font-medium text-sm truncate">{{ $product->name }}</div>
                                         @if($selectedProduct == $product->id)
                                             <div class="text-xs text-green-600 font-medium mt-1">✓ Dipilih</div>
@@ -96,7 +100,7 @@
                             <div class="flex items-center gap-4">
                                 <div class="w-16 h-16 rounded-lg bg-white overflow-hidden">
                                     @if($product->gallery->first())
-                                        <img src="{{ asset('storage/' . $product->gallery->first()->image_url) }}" 
+                                        <img src="{{ asset('storage/' . $product->gallery->first()->image_url) }}"
                                              class="w-full h-full object-cover">
                                     @endif
                                 </div>
@@ -110,12 +114,50 @@
                             </div>
                         </div>
                     @endif
+
+                    {{-- Material Selection --}}
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-3">Pilih Bahan / Material</label>
+                        @if($materials->count() > 0)
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                @foreach($materials as $material)
+                                    <button type="button"
+                                            wire:key="mat-{{ $material->id }}"
+                                            wire:click="$set('selectedMaterial', {{ $material->id }})"
+                                            class="p-3 rounded-xl border-2 text-left transition-all cursor-pointer touch-manipulation
+                                                {{ $selectedMaterial == $material->id
+                                                    ? 'border-black bg-black text-white'
+                                                    : 'border-gray-200 hover:border-gray-300' }}">
+                                        <div class="font-medium text-sm pointer-events-none">{{ $material->name }}</div>
+                                        @if($material->description)
+                                            <div class="text-xs {{ $selectedMaterial == $material->id ? 'text-gray-300' : 'text-gray-500' }} mt-1 pointer-events-none">{{ $material->description }}</div>
+                                        @endif
+                                        @if($selectedMaterial == $material->id)
+                                            <div class="text-xs text-green-400 mt-1 pointer-events-none">✓ Dipilih</div>
+                                        @endif
+                                    </button>
+                                @endforeach
+                            </div>
+                            @if($selectedMaterial)
+                                @php $selectedMaterialObj = $materials->firstWhere('id', $selectedMaterial); @endphp
+                                @if($selectedMaterialObj)
+                                    <div class="mt-3 p-3 bg-green-50 border border-green-200 rounded-lg">
+                                        <span class="text-sm text-green-700">Bahan terpilih: <strong>{{ $selectedMaterialObj->name }}</strong></span>
+                                    </div>
+                                @endif
+                            @endif
+                        @else
+                            <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl text-center">
+                                <p class="text-sm text-yellow-700">Belum ada bahan tersedia. Silakan hubungi admin.</p>
+                            </div>
+                        @endif
+                    </div>
                 @endif
 
                 <div class="flex justify-end">
-                    <button wire:click="nextStep" 
-                            wire:loading.attr="disabled"
-                            class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 disabled:opacity-50">
+                    <button type="button"
+                            wire:click="nextStep"
+                            class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 cursor-pointer touch-manipulation">
                         Lanjutkan →
                     </button>
                 </div>
@@ -129,17 +171,19 @@
                 
                 <div class="mb-6">
                     <div class="flex gap-4 mb-6">
-                        <button wire:click="$set('designType', 'custom')"
-                                class="flex-1 p-4 rounded-xl border-2 text-center transition-all
+                        <button type="button"
+                                wire:click="$set('designType', 'custom')"
+                                class="flex-1 p-4 rounded-xl border-2 text-center transition-all cursor-pointer touch-manipulation
                                     {{ $designType == 'custom' ? 'border-black bg-black text-white' : 'border-gray-200' }}">
-                            <div class="text-2xl mb-2">🎨</div>
-                            <div class="font-medium">Desain Baru</div>
+                            <div class="text-2xl mb-2 pointer-events-none">🎨</div>
+                            <div class="font-medium pointer-events-none">Desain Baru</div>
                         </button>
-                        <button wire:click="$set('designType', 'repeat')"
-                                class="flex-1 p-4 rounded-xl border-2 text-center transition-all
+                        <button type="button"
+                                wire:click="$set('designType', 'repeat')"
+                                class="flex-1 p-4 rounded-xl border-2 text-center transition-all cursor-pointer touch-manipulation
                                     {{ $designType == 'repeat' ? 'border-black bg-black text-white' : 'border-gray-200' }}">
-                            <div class="text-2xl mb-2">🔄</div>
-                            <div class="font-medium">Pesan Ulang</div>
+                            <div class="text-2xl mb-2 pointer-events-none">🔄</div>
+                            <div class="font-medium pointer-events-none">Pesan Ulang</div>
                         </button>
                     </div>
 
@@ -152,7 +196,7 @@
                                     <div class="mb-4">
                                         <img src="{{ $designFile->temporaryUrl() }}" class="max-h-48 mx-auto rounded-lg">
                                     </div>
-                                    <button wire:click="$set('designFile', null)" class="text-red-500 text-sm">Hapus & Upload Ulang</button>
+                                    <button type="button" wire:click="$set('designFile', null)" class="text-red-500 text-sm cursor-pointer touch-manipulation">Hapus & Upload Ulang</button>
                                 @else
                                     <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
@@ -185,12 +229,10 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50">
+                    <button type="button" wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 cursor-pointer touch-manipulation">
                         ← Kembali
                     </button>
-                    <button wire:click="nextStep" 
-                            wire:loading.attr="disabled"
-                            class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800">
+                    <button type="button" wire:click="nextStep" class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 cursor-pointer touch-manipulation">
                         Lanjutkan →
                     </button>
                 </div>
@@ -203,9 +245,9 @@
                 <div class="flex items-center justify-between mb-2">
                     <h2 class="text-xl font-bold">3. Input Quantity per Size</h2>
                     @if($totalQty > 0)
-                        <button wire:click="resetSizeGrid" 
-                                class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button type="button" wire:click="resetSizeGrid"
+                                class="text-sm text-red-500 hover:text-red-700 font-medium flex items-center gap-1 cursor-pointer touch-manipulation">
+                            <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                             </svg>
                             Reset
@@ -263,17 +305,17 @@
                                 <div class="text-xs text-gray-500">Size</div>
                             </div>
                             <div class="flex items-center justify-center gap-2">
-                                <button wire:click="decrementSize('{{ $size }}')" 
-                                        class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 {{ ($sizeGrid[$size] ?? 0) > 0 ? 'border-blue-300' : '' }}">
+                                <button type="button" wire:click="decrementSize('{{ $size }}')"
+                                        class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 cursor-pointer touch-manipulation {{ ($sizeGrid[$size] ?? 0) > 0 ? 'border-blue-300' : '' }}">
                                     −
                                 </button>
-                                <input type="number" 
+                                <input type="number"
                                        wire:model="sizeGrid.{{ $size }}"
                                        wire:change="calculateTotal"
                                        class="w-14 text-center font-bold border-0 bg-transparent text-lg {{ ($sizeGrid[$size] ?? 0) > 0 ? 'text-blue-600' : '' }}"
                                        min="0" value="{{ $sizeGrid[$size] ?? 0 }}">
-                                <button wire:click="incrementSize('{{ $size }}')"
-                                        class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 {{ ($sizeGrid[$size] ?? 0) > 0 ? 'border-blue-300' : '' }}">
+                                <button type="button" wire:click="incrementSize('{{ $size }}')"
+                                        class="w-8 h-8 rounded-lg bg-white border border-gray-300 flex items-center justify-center hover:bg-gray-100 cursor-pointer touch-manipulation {{ ($sizeGrid[$size] ?? 0) > 0 ? 'border-blue-300' : '' }}">
                                     +
                                 </button>
                             </div>
@@ -285,8 +327,8 @@
                 <div class="flex flex-wrap gap-2 mb-6">
                     @foreach($availableSizes as $size)
                         @if(in_array($size, ['S', 'M', 'L', 'XL', '2XL', '3XL']))
-                            <button wire:click="setSizeQty('{{ $size }}', 12)" 
-                                    class="px-3 py-1.5 bg-gray-100 rounded-lg text-sm hover:bg-gray-200 transition-colors">
+                            <button type="button" wire:click="setSizeQty('{{ $size }}', 12)"
+                                    class="px-3 py-1.5 bg-gray-100 rounded-lg text-sm hover:bg-gray-200 transition-colors cursor-pointer touch-manipulation">
                                 Isi 12 {{ $size }}
                             </button>
                         @endif
@@ -294,16 +336,14 @@
                 </div>
 
                 <div class="flex justify-between">
-                    <button wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50">
+                    <button type="button" wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 cursor-pointer touch-manipulation">
                         ← Kembali
                     </button>
-                    <button wire:click="nextStep" 
-                            wire:loading.attr="disabled"
-                            @if(!$moqMet) disabled @endif
-                            class="px-6 py-3 rounded-xl font-medium transition-colors
-                                {{ $moqMet 
-                                    ? 'bg-black text-white hover:bg-gray-800' 
-                                    : 'bg-gray-200 text-gray-400 cursor-not-allowed' }}">
+                    <button type="button" wire:click="nextStep"
+                            class="px-6 py-3 rounded-xl font-medium transition-colors cursor-pointer touch-manipulation
+                                {{ $moqMet
+                                    ? 'bg-black text-white hover:bg-gray-800'
+                                    : 'bg-gray-200 text-gray-400' }}">
                         Lanjutkan →
                     </button>
                 </div>
@@ -348,8 +388,14 @@
                         <h3 class="font-semibold mb-3">Ringkasan Pesanan:</h3>
                         <div class="text-sm space-y-1">
                             <div><span class="text-gray-600">Produk:</span> {{ $product->name }}</div>
+                            @if($selectedMaterial)
+                                @php $materialObj = $materials->firstWhere('id', $selectedMaterial); @endphp
+                                @if($materialObj)
+                                    <div><span class="text-gray-600">Bahan:</span> {{ $materialObj->name }}</div>
+                                @endif
+                            @endif
                             <div><span class="text-gray-600">Total:</span> {{ $totalQty }} pcs</div>
-                            <div><span class="text-gray-600">Size:</span> 
+                            <div><span class="text-gray-600">Size:</span>
                                 @foreach($sizeGrid as $size => $qty)
                                     @if($qty > 0) {{ $size }}:{{ $qty }} @endif
                                 @endforeach
@@ -359,13 +405,12 @@
                 @endif
 
                 <div class="flex justify-between">
-                    <button wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50">
+                    <button type="button" wire:click="prevStep" class="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl font-medium hover:bg-gray-50 cursor-pointer touch-manipulation">
                         ← Kembali
                     </button>
-                    <button wire:click="submitOrder" 
-                            wire:loading.attr="disabled"
-                            class="px-6 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <button type="button" wire:click="submitOrder"
+                            class="px-6 py-3 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 flex items-center gap-2 cursor-pointer touch-manipulation">
+                        <svg class="w-5 h-5 pointer-events-none" fill="currentColor" viewBox="0 0 24 24">
                             <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
                             <path d="M12 0C5.373 0 0 5.373 0 12c0 2.111.547 4.099 1.504 5.828L0 24l6.335-1.652A11.94 11.94 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.82c-1.87 0-3.63-.5-5.14-1.38l-.36-.22-3.76.98.99-3.65-.24-.38A9.82 9.82 0 012.18 12c0-5.42 4.4-9.82 9.82-9.82 5.42 0 9.82 4.4 9.82 9.82 0 5.42-4.4 9.82-9.82 9.82z"/>
                         </svg>
@@ -388,7 +433,7 @@
                 <h3 class="text-xl font-bold mb-2">Pesanan Tersimpan!</h3>
                 <p class="text-gray-600 mb-4">Order Number: <span class="font-mono font-bold">{{ $orderNumber }}</span></p>
                 <p class="text-sm text-gray-500 mb-6">Kami akan membuka WhatsApp dengan detail pesanan Anda. Silakan kirimkan juga file desain (jika ada).</p>
-                <button wire:click="resetForm" class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800">
+                <button type="button" wire:click="resetForm" class="px-6 py-3 bg-black text-white rounded-xl font-medium hover:bg-gray-800 cursor-pointer touch-manipulation">
                     Buat Pesanan Baru
                 </button>
             </div>

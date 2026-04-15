@@ -2,8 +2,8 @@
     <!-- Header -->
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">User Management</h2>
-        <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <button type="button" wire:click="create"
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 cursor-pointer touch-manipulation">
             Add New User
         </button>
     </div>
@@ -29,8 +29,8 @@
                 class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 sm:text-sm transition-all">
 
             @if($search)
-                <button wire:click="$set('search', '')"
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors"
+                <button type="button" wire:click="$set('search', '')"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors cursor-pointer touch-manipulation"
                     title="Clear search">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -68,10 +68,10 @@
                                 {{ $user->name }}
                             </td>
                             <td class="px-6 py-4 text-right text-sm space-x-2">
-                                <button wire:click="edit({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900">
+                                <button type="button" wire:click="edit({{ $user->id }})" class="text-indigo-600 hover:text-indigo-900 cursor-pointer touch-manipulation">
                                     Edit
                                 </button>
-                                <button wire:click="delete({{ $user->id }})" class="text-red-600 hover:text-red-900">
+                                <button type="button" wire:click="delete({{ $user->id }})" class="text-red-600 hover:text-red-900 cursor-pointer touch-manipulation">
                                     Delete
                                 </button>
                             </td>
@@ -99,7 +99,7 @@
                     <h3 class="text-lg font-semibold">
                         {{ $selected_id ? 'Edit User' : 'Add New User' }}
                     </h3>
-                    <button wire:click="$set('isOpen', false)" class="text-gray-400 hover:text-gray-600">
+                    <button type="button" wire:click="$set('isOpen', false)" class="text-gray-400 hover:text-gray-600 cursor-pointer touch-manipulation">
                         ✕
                     </button>
                 </div>
@@ -132,10 +132,10 @@
                     <!-- Modal Footer -->
                     <div class="px-6 py-4 border-t bg-gray-50 flex justify-end space-x-3">
                         <button type="button" wire:click="$set('isOpen', false)"
-                            class="px-4 py-2 text-sm border rounded-md">
+                            class="px-4 py-2 text-sm border rounded-md cursor-pointer touch-manipulation">
                             Cancel
                         </button>
-                        <button type="submit" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                        <button type="submit" class="px-4 py-2 text-sm text-white bg-blue-600 rounded-md hover:bg-blue-700 cursor-pointer touch-manipulation">
                             {{ $selected_id ? 'Update' : 'Create' }}
                         </button>
                     </div>

@@ -89,12 +89,16 @@ class ProductTable extends Component
 
     public function delete($id)
     {
-        $product = Product::find($id);
-        // Opsional: Hapus file gambar dari storage jika ada
-        // if($product->image_url) Storage::disk('public')->delete($product->image_url);
-        
-        $product->delete();
-        session()->flash('message', 'Product Deleted.');
+        try {
+            $product = Product::findOrFail($id);
+            // Opsional: Hapus file gambar dari storage jika ada
+            // if($product->image_url) Storage::disk('public')->delete($product->image_url);
+
+            $product->delete();
+            session()->flash('message', 'Product Deleted.');
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error deleting product: ' . $e->getMessage());
+        }
     }
 
     private function resetInputFields()

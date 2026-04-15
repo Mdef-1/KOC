@@ -2,8 +2,8 @@
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Inquiry Management</h2>
-        <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+        <button type="button" wire:click="create"
+            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors cursor-pointer touch-manipulation">
             Add New Inquiry
         </button>
     </div>
@@ -61,17 +61,17 @@
                                                     'cancelled' => 'bg-red-100 text-red-800',
                                                 ];
                                             @endphp
-                         <span
+                                            <span
                                                 class="px-2.5 py-1 rounded text-xs font-bold {{ $statusColors[$inquiry->status] ?? 'bg-gray-100 text-gray-800' }}">
                                                 {{ strtoupper($inquiry->status) }}
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 text-right text-sm font-medium space-x-3">
-                                            <button wire:click="edit({{ $inquiry->id }})"
-                                                class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                            <button wire:click="delete({{ $inquiry->id }})"
+                                            <button type="button" wire:click="edit({{ $inquiry->id }})"
+                                                class="text-indigo-600 hover:text-indigo-900 cursor-pointer touch-manipulation">Edit</button>
+                                            <button type="button" wire:click="delete({{ $inquiry->id }})"
                                                 onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-                                                class="text-red-600 hover:text-red-900">Delete</button>
+                                                class="text-red-600 hover:text-red-900 cursor-pointer touch-manipulation">Delete</button>
                                         </td>
                                     </tr>
                     @endforeach
@@ -168,9 +168,9 @@
                         {{-- Footer --}}
                         <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3 rounded-b-xl border-t border-gray-100">
                             <button type="button" wire:click="$set('isOpen', false)"
-                                class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">Cancel</button>
+                                class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors cursor-pointer touch-manipulation">Cancel</button>
                             <button type="submit"
-                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors">
+                                class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors cursor-pointer touch-manipulation">
                                 <span wire:loading.remove>{{ $selected_id ? 'Save Changes' : 'Create Inquiry' }}</span>
                                 <span wire:loading>Processing...</span>
                             </button>

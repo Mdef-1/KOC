@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Inventory Management</h2>
         <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none">
+            class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none cursor-pointer touch-manipulation">
             Add New Item
         </button>
     </div>
@@ -12,6 +12,12 @@
     @if (session()->has('message'))
         <div class="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded relative">
             {{ session('message') }}
+        </div>
+    @endif
+
+    @if (session()->has('error'))
+        <div class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded relative">
+            {{ session('error') }}
         </div>
     @endif
 
@@ -55,17 +61,12 @@
                         {{-- Main Product Row --}}
                         <tr class="hover:bg-gray-50 {{ $isExpanded ? 'bg-blue-50' : '' }}">
                             <td class="px-4 py-4">
-                                <button wire:click="toggleProduct({{ $productId }})" 
-                                    wire:loading.attr="disabled"
-                                    wire:target="toggleProduct({{ $productId }})"
-                                    class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <svg wire:loading.remove wire:target="toggleProduct({{ $productId }})" class="w-4 h-4 text-gray-600 transform {{ $isExpanded ? 'rotate-90' : '' }} transition-transform" 
+                                <button type="button"
+                                    wire:click="toggleProduct({{ $productId }})"
+                                    class="w-6 h-6 flex items-center justify-center rounded-full bg-gray-100 hover:bg-gray-200 transition-colors cursor-pointer touch-manipulation">
+                                    <svg class="w-4 h-4 text-gray-600 transform {{ $isExpanded ? 'rotate-90' : '' }} transition-transform" 
                                         fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                                    </svg>
-                                    <svg wire:loading wire:target="toggleProduct({{ $productId }})" class="w-4 h-4 text-gray-600 animate-spin" fill="none" viewBox="0 0 24 24">
-                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                     </svg>
                                 </button>
                             </td>
@@ -80,12 +81,10 @@
                                 {{ $totalStock }}
                             </td>
                             <td class="px-6 py-4 text-right text-sm font-medium">
-                                <button wire:click="createWithProduct({{ $productId }})"
-                                    wire:loading.attr="disabled"
-                                    wire:target="createWithProduct({{ $productId }})"
-                                    class="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 text-xs disabled:opacity-50 disabled:cursor-not-allowed">
-                                    <span wire:loading.remove wire:target="createWithProduct({{ $productId }})">+ Add Size</span>
-                                    <span wire:loading wire:target="createWithProduct({{ $productId }})">Loading...</span>
+                                <button type="button"
+                                    wire:click="createWithProduct({{ $productId }})"
+                                    class="text-blue-600 hover:text-blue-900 px-2 py-1 rounded hover:bg-blue-50 text-xs cursor-pointer touch-manipulation">
+                                    + Add Size
                                 </button>
                             </td>
                         </tr>
@@ -115,33 +114,23 @@
                                                         <td class="px-4 py-3 text-sm text-gray-500">{{ $item->warehouse_location ?? '-' }}</td>
                                                         <td class="px-4 py-3 text-right">
                                                             <div class="flex items-center justify-end gap-1">
-                                                                <button wire:click="quickAdjustStock({{ $item->id }}, -1)" 
-                                                                    wire:loading.attr="disabled"
-                                                                    wire:target="quickAdjustStock({{ $item->id }}, -1)"
-                                                                    class="w-5 h-5 flex items-center justify-center rounded bg-red-100 text-red-600 hover:bg-red-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                <button type="button"
+                                                                    wire:click="quickAdjustStock({{ $item->id }}, -1)"
+                                                                    class="w-5 h-5 flex items-center justify-center rounded bg-red-100 text-red-600 hover:bg-red-200 transition-colors cursor-pointer touch-manipulation"
                                                                     title="Kurangi 1">
-                                                                    <svg wire:loading.remove wire:target="quickAdjustStock({{ $item->id }}, -1)" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <svg class="w-3 h-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                                                                    </svg>
-                                                                    <svg wire:loading wire:target="quickAdjustStock({{ $item->id }}, -1)" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                                     </svg>
                                                                 </button>
                                                                 <span class="px-2 text-xs font-semibold {{ $item->stock > 10 ? 'text-green-600' : ($item->stock > 0 ? 'text-yellow-600' : 'text-red-600') }}">
                                                                     {{ $item->stock }}
                                                                 </span>
-                                                                <button wire:click="quickAdjustStock({{ $item->id }}, 1)" 
-                                                                    wire:loading.attr="disabled"
-                                                                    wire:target="quickAdjustStock({{ $item->id }}, 1)"
-                                                                    class="w-5 h-5 flex items-center justify-center rounded bg-green-100 text-green-600 hover:bg-green-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                <button type="button"
+                                                                    wire:click="quickAdjustStock({{ $item->id }}, 1)"
+                                                                    class="w-5 h-5 flex items-center justify-center rounded bg-green-100 text-green-600 hover:bg-green-200 transition-colors cursor-pointer touch-manipulation"
                                                                     title="Tambah 1">
-                                                                    <svg wire:loading.remove wire:target="quickAdjustStock({{ $item->id }}, 1)" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <svg class="w-3 h-3 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                                                                    </svg>
-                                                                    <svg wire:loading wire:target="quickAdjustStock({{ $item->id }}, 1)" class="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-                                                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                                                                     </svg>
                                                                 </button>
                                                             </div>
@@ -149,34 +138,26 @@
                                                         <td class="px-4 py-3 text-right text-sm">Rp {{ number_format($item->cost_price, 0, ',', '.') }}</td>
                                                         <td class="px-4 py-3 text-right text-sm">Rp {{ number_format($item->final_price, 0, ',', '.') }}</td>
                                                         <td class="px-4 py-3 text-center text-sm space-x-1">
-                                                            <button wire:click="openStockModal({{ $item->id }})" 
-                                                                wire:loading.attr="disabled"
-                                                                wire:target="openStockModal({{ $item->id }})"
-                                                                class="text-blue-600 hover:text-blue-800 px-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                            <button type="button"
+                                                                wire:click="openStockModal({{ $item->id }})"
+                                                                class="text-blue-600 hover:text-blue-800 px-1 cursor-pointer touch-manipulation"
                                                                 title="Adjust Stock">
-                                                                <svg wire:loading.remove wire:target="openStockModal({{ $item->id }})" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                <svg class="w-4 h-4 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/>
                                                                 </svg>
-                                                                <svg wire:loading wire:target="openStockModal({{ $item->id }})" class="w-4 h-4 animate-spin" fill="none" viewBox="0 0 24 24">
-                                                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                                                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                                                                </svg>
                                                             </button>
-                                                            <button wire:click="edit({{ $item->id }})"
-                                                                wire:loading.attr="disabled"
-                                                                wire:target="edit({{ $item->id }})"
-                                                                class="text-indigo-600 hover:text-indigo-900 px-1 disabled:opacity-50 disabled:cursor-not-allowed">
-                                                                <span wire:loading.remove wire:target="edit({{ $item->id }})">Edit</span>
-                                                                <span wire:loading wire:target="edit({{ $item->id }})">...</span>
+                                                            <button type="button"
+                                                                wire:click="edit({{ $item->id }})"
+                                                                class="text-indigo-600 hover:text-indigo-900 px-1 cursor-pointer touch-manipulation">
+                                                                Edit
                                                             </button>
-                                                            <button wire:click="delete({{ $item->id }})"
-                                                                wire:loading.attr="disabled"
-                                                                wire:target="delete({{ $item->id }})"
+                                                            <button type="button"
+                                                                wire:key="delete-{{ $item->id }}"
+                                                                wire:click="delete({{ $item->id }})"
                                                                 onclick="return confirm('Yakin hapus item ini?')"
-                                                                class="text-red-600 hover:text-red-900 px-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                                                                class="text-red-600 hover:text-red-900 px-1 cursor-pointer touch-manipulation"
                                                                 title="Hapus item">
-                                                                <span wire:loading.remove wire:target="delete({{ $item->id }})">Del</span>
-                                                                <span wire:loading wire:target="delete({{ $item->id }})">...</span>
+                                                                Del
                                                             </button>
                                                         </td>
                                                     </tr>
@@ -198,7 +179,7 @@
 
     {{-- Modal Create/Edit --}}
     @if($isOpen)
-        <div class="fixed inset-0 z-50 overflow-y-auto" x-data="{ open: true }" x-show="open" x-on:keydown.escape.window="open = false; $wire.$set('isOpen', false)">
+        <div class="fixed inset-0 z-50 overflow-y-auto" wire:key="inventory-modal-{{ $product_id ?? 'new' }}" x-data="{ open: true }" x-show="open" x-on:keydown.escape.window="open = false; $wire.$set('isOpen', false)">
             <div class="flex items-center justify-center min-h-screen px-4 py-6 text-center">
                 <div class="fixed inset-0 bg-black/50 transition-opacity" wire:click="$set('isOpen', false)"></div>
 
@@ -209,7 +190,7 @@
                             <h3 class="text-lg font-medium text-gray-900">{{ $selected_id ? 'Edit' : 'Add New' }} Inventory
                                 Item</h3>
                             <button type="button" wire:click="$set('isOpen', false)"
-                                class="text-gray-400 hover:text-gray-500">✕</button>
+                                class="text-gray-400 hover:text-gray-500 cursor-pointer touch-manipulation">✕</button>
                         </div>
                     </div>
 
@@ -229,7 +210,7 @@
                                     <label class="block text-sm font-medium text-gray-700">Product <span
                                             class="text-red-500">*</span></label>
                                     <select wire:model.live="product_id"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full">
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full cursor-pointer touch-manipulation">
                                         <option value="">Select a product</option>
                                         @foreach(\App\Models\Product::with('category')->orderBy('name', 'asc')->get() as $product)
                                             <option value="{{ $product->id }}">{{ $product->name }}</option>
@@ -271,7 +252,7 @@
                                     <label class="block text-sm font-medium text-gray-700">Size <span
                                             class="text-red-500">*</span></label>
                                     <select wire:model="size_id"
-                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full">
+                                        class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 text-sm max-w-full cursor-pointer touch-manipulation">
                                         <option value="">Select a size</option>
                                         @forelse($sizes as $size)
                                             <option value="{{ $size->id }}">{{ $size->label }} ({{ $size->width }}x{{ $size->length }})</option>
@@ -372,6 +353,13 @@
 
                     <form wire:submit.prevent="adjustStock">
                         <div class="px-6 py-6 space-y-4">
+                            {{-- Global Error Alert --}}
+                            @if ($errors->has('adjustmentQty'))
+                                <div class="p-3 bg-red-50 border border-red-200 rounded-md">
+                                    <p class="text-sm text-red-600">{{ $errors->first('adjustmentQty') }}</p>
+                                </div>
+                            @endif
+
                             {{-- Adjustment Type --}}
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Tipe Penyesuaian</label>

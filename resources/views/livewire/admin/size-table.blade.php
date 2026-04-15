@@ -1,8 +1,9 @@
 <div class="p-6 bg-white rounded-lg shadow">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-2xl font-semibold text-gray-800">Size Management</h2>
-        <button wire:click="create"
-            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors">
+        <button type="button"
+            wire:click="create"
+            class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 cursor-pointer touch-manipulation transition-colors">
             Add New Size
         </button>
     </div>
@@ -33,8 +34,9 @@
                 class="block w-full pl-10 pr-10 py-2.5 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 sm:text-sm transition-all">
 
             @if($search)
-                <button wire:click="$set('search', '')"
-                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
+                <button type="button"
+                    wire:click="$set('search', '')"
+                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 cursor-pointer touch-manipulation transition-colors">
                     <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -72,10 +74,13 @@
                                     Rp {{ number_format($size->extra_price, 0, ',', '.') }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium space-x-3">
-                                    <button wire:click="edit({{ $size->id }})" class="text-indigo-600 hover:text-indigo-900">Edit</button>
-                                    <button wire:click="delete({{ $size->id }})" 
+                                    <button type="button"
+                                        wire:click="edit({{ $size->id }})"
+                                        class="text-indigo-600 hover:text-indigo-900 cursor-pointer touch-manipulation">Edit</button>
+                                    <button type="button"
+                                        wire:click="delete({{ $size->id }})"
                                         onclick="confirm('Are you sure?') || event.stopImmediatePropagation()"
-                                        class="text-red-600 hover:text-red-900">Delete</button>
+                                        class="text-red-600 hover:text-red-900 cursor-pointer touch-manipulation">Delete</button>
                                 </td>
                             </tr>
                         @endforeach
@@ -165,10 +170,9 @@
                         </div>
 
                         <div class="px-6 py-4 bg-gray-50 flex justify-end space-x-3">
-                            <button type="button" wire:click="$set('isOpen', false)" class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100">Cancel</button>
-                            <button type="submit" wire:loading.attr="disabled" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 disabled:opacity-50">
-                                <span wire:loading.remove>{{ $selected_id ? 'Save Changes' : 'Create Size' }}</span>
-                                <span wire:loading>Saving...</span>
+                            <button type="button" wire:click="$set('isOpen', false)" class="px-4 py-2 text-sm text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-100 cursor-pointer touch-manipulation">Cancel</button>
+                            <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 cursor-pointer touch-manipulation">
+                                {{ $selected_id ? 'Save Changes' : 'Create Size' }}
                             </button>
                         </div>
                     </form>

@@ -3,6 +3,7 @@
 namespace App\Livewire\Public;
 
 use App\Models\Category;
+use App\Models\Material;
 use App\Models\Product;
 use App\Models\Size;
 use Livewire\Component;
@@ -15,6 +16,7 @@ class OrderBuilder extends Component
     // Step 1: Product Selection
     public $selectedCategory = null;
     public $selectedProduct = null;
+    public $selectedMaterial = null;
     
     // Step 2: Design
     public $designType = 'custom'; // 'custom' or 'repeat'
@@ -43,6 +45,7 @@ class OrderBuilder extends Component
     
     protected $rules = [
         'selectedProduct' => 'required|exists:products,id',
+        'selectedMaterial' => 'required|exists:materials,id',
         'designFile' => 'nullable|image|max:5120', // 5MB max
         'designNotes' => 'nullable|string|max:500',
         'customerName' => 'required|string|min:3|max:100',
@@ -90,6 +93,7 @@ class OrderBuilder extends Component
                 }
             }
         }
+        $this->selectedMaterial = null;
         $this->calculateTotal();
     }
     
@@ -143,6 +147,10 @@ class OrderBuilder extends Component
             case 1:
                 if (!$this->selectedProduct) {
                     session()->flash('error', 'Pilih produk terlebih dahulu.');
+                    return false;
+                }
+                if (!$this->selectedMaterial) {
+                    session()->flash('error', 'Pilih jenis bahan terlebih dahulu.');
                     return false;
                 }
                 break;
@@ -200,7 +208,9 @@ class OrderBuilder extends Component
         $product = Product::find($this->selectedProduct);
         $waMessage = "Halo KOC, saya mau order:\n\n";
         $waMessage .= "📋 *Order Number:* {$this->orderNumber}\n";
+        $material = Material::find($this->selectedMaterial);
         $waMessage .= "👕 *Produk:* {$product->name}\n";
+        $waMessage .= "🧵 *Bahan:* {$material->name}\n";
         $waMessage .= "📊 *Total:* {$this->totalQty} pcs\n\n";
         $waMessage .= "📏 *Rincian Size:*\n" . implode("\n", $sizeDetails) . "\n\n";
         
@@ -220,6 +230,7 @@ class OrderBuilder extends Component
         \App\Models\Order::create([
             'order_number' => $this->orderNumber,
             'product_id' => $this->selectedProduct,
+            'material_id' => $this->selectedMaterial,
             'customer_name' => $this->customerName,
             'customer_contact' => $this->customerContact,
             'customer_address' => $this->customerAddress,
@@ -245,7 +256,7 @@ class OrderBuilder extends Component
     public function resetForm()
     {
         $this->reset([
-            'selectedCategory', 'selectedProduct', 'designType', 'designFile',
+            'selectedCategory', 'selectedProduct', 'selectedMaterial', 'designType', 'designFile',
             'designNotes', 'selectedPreviousDesign', 'customerName',
             'customerContact', 'customerAddress', 'showSummary', 'orderNumber'
         ]);
@@ -265,9 +276,12 @@ class OrderBuilder extends Component
                 ->get()
             : collect();
         
+        $materials = Material::active()->ordered()->get();
+        
         return view('livewire.public.order-builder', [
             'categories' => $categories,
             'products' => $products,
+            'materials' => $materials,
         ])->layout('layouts.guest');
     }
 }

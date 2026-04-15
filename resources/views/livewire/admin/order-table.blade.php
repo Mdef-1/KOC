@@ -63,12 +63,12 @@
                         </td>
                         <td class="px-4 py-3">
                             <div class="flex gap-2">
-                                <button wire:click="openEditModal({{ $order->id }})" 
-                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <button type="button" wire:click="openEditModal({{ $order->id }})"
+                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer touch-manipulation">
                                     Edit
                                 </button>
-                                <button wire:click="confirmDelete({{ $order->id }})" 
-                                        class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                <button type="button" wire:click="confirmDelete({{ $order->id }})"
+                                        class="text-red-600 hover:text-red-800 text-sm font-medium cursor-pointer touch-manipulation">
                                     Delete
                                 </button>
                             </div>
@@ -95,7 +95,7 @@
             <div class="bg-white rounded-lg shadow-lg w-full max-w-lg mx-4">
                 <div class="px-6 py-4 border-b flex items-center justify-between">
                     <h3 class="text-lg font-semibold">Edit Order {{ $editingOrder?->order_number }}</h3>
-                    <button wire:click="closeModal" class="text-gray-400 hover:text-gray-600">✕</button>
+                    <button type="button" wire:click="closeModal" class="text-gray-400 hover:text-gray-600 cursor-pointer touch-manipulation">✕</button>
                 </div>
                 <div class="px-6 py-4 space-y-4">
                     <div>
@@ -120,8 +120,8 @@
                     </div>
                 </div>
                 <div class="px-6 py-4 border-t flex justify-end gap-2">
-                    <button wire:click="closeModal" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
-                    <button wire:click="saveOrder" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Simpan</button>
+                    <button type="button" wire:click="closeModal" class="px-4 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer touch-manipulation">Batal</button>
+                    <button type="button" wire:click="saveOrder" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 cursor-pointer touch-manipulation">Simpan</button>
                 </div>
             </div>
         </div>
@@ -136,8 +136,8 @@
                     <p class="text-gray-600">Apakah Anda yakin ingin menghapus order ini?</p>
                 </div>
                 <div class="px-6 py-4 border-t flex justify-end gap-2">
-                    <button wire:click="$set('showDeleteModal', false)" class="px-4 py-2 border rounded-lg hover:bg-gray-50">Batal</button>
-                    <button wire:click="deleteOrder" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700">Hapus</button>
+                    <button type="button" wire:click="$set('showDeleteModal', false)" class="px-4 py-2 border rounded-lg hover:bg-gray-50 cursor-pointer touch-manipulation">Batal</button>
+                    <button type="button" wire:click="deleteOrder" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 cursor-pointer touch-manipulation">Hapus</button>
                 </div>
             </div>
         </div>

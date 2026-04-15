@@ -89,9 +89,9 @@
                             {{ $product->category->name ?? '-' }}
                         </td>
                         <td class="px-4 py-4 text-center">
-                            <button wire:click="toggleFeatured({{ $product->id }})"
+                            <button type="button" wire:click="toggleFeatured({{ $product->id }})"
                                     wire:loading.attr="disabled"
-                                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors
+                                    class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium transition-colors cursor-pointer touch-manipulation
                                         {{ $product->is_featured 
                                             ? 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' 
                                             : 'bg-gray-100 text-gray-600 hover:bg-gray-200' }}">
@@ -111,17 +111,17 @@
                         <td class="px-4 py-4 text-center">
                             @if($product->is_featured)
                                 <div class="flex items-center justify-center gap-2">
-                                    <button wire:click="moveUp({{ $product->id }})"
+                                    <button type="button" wire:click="moveUp({{ $product->id }})"
                                             wire:loading.attr="disabled"
-                                            class="p-1 rounded hover:bg-gray-200 text-gray-600">
+                                            class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer touch-manipulation">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/>
                                         </svg>
                                     </button>
                                     <span class="font-mono text-sm font-medium text-gray-900 w-8">{{ $product->featured_order ?? 1 }}</span>
-                                    <button wire:click="moveDown({{ $product->id }})"
+                                    <button type="button" wire:click="moveDown({{ $product->id }})"
                                             wire:loading.attr="disabled"
-                                            class="p-1 rounded hover:bg-gray-200 text-gray-600">
+                                            class="p-1 rounded hover:bg-gray-200 text-gray-600 cursor-pointer touch-manipulation">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
@@ -133,8 +133,8 @@
                         </td>
                         <td class="px-4 py-4 text-center">
                             @if($product->is_featured)
-                                <button wire:click="openOrderModal({{ $product->id }})"
-                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                                <button type="button" wire:click="openOrderModal({{ $product->id }})"
+                                        class="text-blue-600 hover:text-blue-800 text-sm font-medium cursor-pointer touch-manipulation">
                                     Edit Urutan
                                 </button>
                             @endif
@@ -183,12 +183,12 @@
                         </div>
                     </div>
                     <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                        <button wire:click="saveOrder"
-                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="button" wire:click="saveOrder"
+                                class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-black text-base font-medium text-white hover:bg-gray-800 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm cursor-pointer touch-manipulation">
                             Simpan
                         </button>
-                        <button wire:click="closeModal"
-                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                        <button type="button" wire:click="closeModal"
+                                class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm cursor-pointer touch-manipulation">
                             Batal
                         </button>
                     </div>

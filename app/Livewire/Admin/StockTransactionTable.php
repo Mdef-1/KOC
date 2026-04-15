@@ -65,12 +65,17 @@ class StockTransactionTable extends Component
 
     public function executeConfirm()
     {
-        if ($this->confirmAction === 'delete' && $this->confirmId) {
-            StockTransaction::findOrFail($this->confirmId)->delete();
-            session()->flash('message', 'Transaksi berhasil dipindahkan ke sampah.');
-        } elseif ($this->confirmAction === 'restore' && $this->confirmId) {
-            StockTransaction::withTrashed()->findOrFail($this->confirmId)->restore();
-            session()->flash('message', 'Transaksi berhasil dikembalikan.');
+        try {
+            if ($this->confirmAction === 'delete' && $this->confirmId) {
+                StockTransaction::findOrFail($this->confirmId)->delete();
+                session()->flash('message', 'Transaksi berhasil dipindahkan ke sampah.');
+            } elseif ($this->confirmAction === 'restore' && $this->confirmId) {
+                $transaction = StockTransaction::withTrashed()->findOrFail($this->confirmId);
+                $transaction->restore();
+                session()->flash('message', 'Transaksi berhasil dikembalikan.');
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Error: ' . $e->getMessage());
         }
 
         $this->closeConfirm();
@@ -215,7 +220,7 @@ class StockTransactionTable extends Component
             $this->isOpen = false;
             $this->resetInputFields();
             $this->dispatch('contentChanged');
-        } catch (\Exception $e) { 
+        } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
             $this->dispatch('notify', ['message' => $e->getMessage(), 'type' => 'error']);
         }

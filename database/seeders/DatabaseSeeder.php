@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
         // Create admin user
         User::firstOrCreate(
             ['name' => 'admin'],
-            ['password' => Hash::make('password')]
+            ['password' => Hash::make('password'), 'role' => 'admin']
         );
 
         // Run seeders in order

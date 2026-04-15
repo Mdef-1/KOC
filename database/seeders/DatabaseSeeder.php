@@ -13,25 +13,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user (using customer_contact as unique identifier)
-        User::firstOrCreate(
-            ['customer_contact' => 'admin@koc.com'],
-            [
-                'name' => 'Admin User',
-                'password' => Hash::make('password'),
-                'role' => 'admin',
-            ]
-        );
-
-        // Create regular user
-        User::firstOrCreate(
-            ['customer_contact' => 'user@koc.com'],
-            [
-                'name' => 'Regular User',
-                'password' => Hash::make('password'),
-                'role' => 'user',
-            ]
-        );
+        // Note: Create users manually via tinker or register form
+        // Users table doesn't have email/customer_contact column
 
         // Run seeders in order
         $this->call([

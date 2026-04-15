@@ -17,7 +17,6 @@ class ProductSeeder extends Seeder
         DB::table('products')->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        $faker = \Faker\Factory::create('id_ID');
         $categories = Category::pluck('id');
 
         if ($categories->isEmpty()) {
@@ -25,16 +24,21 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        for ($i = 1; $i <= 20; $i++) {
-            $name = $faker->sentence(3);
-            $slug = Str::slug($name);
-            
+        $products = [
+            'Kaos Polos Cotton', 'Kaos Raglan Premium', 'Polo Shirt Kerah', 'Sweater Hoodie Polos',
+            'Jaket Varsity', 'Kaos V-Neck', 'Kaos Long Sleeve', 'Tank Top Polos',
+            'Kaos Anak Karakter', 'Kemeja Flanel', 'Kaos Oversized', 'Crop Top Polos',
+            'Kaos Sport Dry Fit', 'Seragam Komunitas', 'Kaos Family Bundle', 'Jersey Futsal',
+            'Kaos Sablon Custom', 'Jaket Bomber', 'Sweater Crew Neck', 'Kaos Muscle Fit'
+        ];
+
+        foreach ($products as $i => $name) {
             Product::create([
                 'name' => $name,
-                'slug' => $slug,
-                'description' => $faker->paragraph(3),
-                'category_id' => $faker->randomElement($categories),
-                'is_active' => $faker->boolean(90) // 90% chance of being active
+                'slug' => Str::slug($name) . '-' . ($i + 1),
+                'description' => 'Produk berkualitas dengan bahan premium, nyaman dipakai sehari-hari.',
+                'category_id' => $categories->random(),
+                'is_active' => true
             ]);
         }
 

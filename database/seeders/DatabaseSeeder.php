@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
+        // Create admin user (using customer_contact as unique identifier)
         User::firstOrCreate(
-            ['email' => 'admin@koc.com'],
+            ['customer_contact' => 'admin@koc.com'],
             [
                 'name' => 'Admin User',
                 'password' => Hash::make('password'),
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
 
         // Create regular user
         User::firstOrCreate(
-            ['email' => 'user@koc.com'],
+            ['customer_contact' => 'user@koc.com'],
             [
                 'name' => 'Regular User',
                 'password' => Hash::make('password'),

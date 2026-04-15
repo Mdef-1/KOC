@@ -13,8 +13,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Note: Create users manually via tinker or register form
-        // Users table doesn't have email/customer_contact column
+        // Create admin user
+        User::firstOrCreate(
+            ['name' => 'admin'],
+            ['password' => Hash::make('password')]
+        );
 
         // Run seeders in order
         $this->call([

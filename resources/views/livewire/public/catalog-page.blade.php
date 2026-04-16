@@ -148,13 +148,6 @@
                                 <h4 class="font-heading font-700 text-base sm:text-lg mt-1 leading-tight {{ $isOutOfStock ? 'text-brand-gray' : 'group-hover:text-brand-gray' }} transition-colors">
                                     {{ $product->name }}
                                 </h4>
-                                <p class="font-mono text-sm mt-1 {{ $isOutOfStock ? 'text-brand-gray' : 'text-brand-black' }}">
-                                    @if($isOutOfStock)
-                                        <span class="text-red-500 font-medium">Stok Habis</span>
-                                    @else
-                                        {{ $product->price ? 'Rp ' . number_format($product->price, 0, ',', '.') : 'Tanya Harga' }}
-                                    @endif
-                                </p>
                             </div>
                         </div>
                     @empty

@@ -30,5 +30,8 @@
     {{ $slot }}
     {{-- Livewire --}}
     @livewireScripts
+
+    {{-- Pushed Scripts --}}
+    @stack('scripts')
 </body>
 </html>

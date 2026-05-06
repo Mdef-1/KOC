@@ -306,44 +306,56 @@
   </section>
 
   {{-- WHY CHOOSE US --}}
-  <section id="keunggulan" class="py-16 bg-white">
-   <div class="max-w-5xl mx-auto px-6">
-    <div class="reveal text-center mb-12">
+  <section id="keunggulan" class="py-20 bg-gray-50">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal text-center mb-16">
      <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">Why Us</span>
-     <h2 class="font-heading font-800 text-3xl md:text-4xl mt-2">Kenapa Memilih Kami?</h2>
+     <h2 class="font-heading font-800 text-4xl md:text-5xl mt-3">Kenapa Memilih Kami?</h2>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-     <div class="reveal text-center p-5">
-      <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-       <i data-lucide="sparkles" class="w-5 h-5 text-white"></i>
+    <div class="grid md:grid-cols-2 gap-6">
+     {{-- Feature 1 --}}
+     <div class="reveal bg-white rounded-3xl p-8 shadow-sm border border-gray-100">
+      <div class="flex items-start gap-5">
+       <span class="text-5xl font-heading font-800 text-gray-200">01</span>
+       <div>
+        <h3 class="font-heading font-700 text-xl mb-2">Desain Motif Eksklusif</h3>
+        <p class="text-gray-600">Motif unik berkarakter khas brand. Tampil stylish dan percaya diri dengan berbagai pilihan warna trendi.</p>
+       </div>
       </div>
-      <h3 class="font-semibold text-sm mb-2">Desain Eksklusif</h3>
-      <p class="text-xs text-gray-500">Motif unik khas KOC, stylish dan percaya diri</p>
      </div>
 
-     <div class="reveal text-center p-5" style="animation-delay: 0.1s;">
-      <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-       <i data-lucide="gem" class="w-5 h-5 text-white"></i>
+     {{-- Feature 2 --}}
+     <div class="reveal bg-white rounded-3xl p-8 shadow-sm border border-gray-100" style="animation-delay: 0.1s;">
+      <div class="flex items-start gap-5">
+       <span class="text-5xl font-heading font-800 text-gray-200">02</span>
+       <div>
+        <h3 class="font-heading font-700 text-xl mb-2">Kualitas Material Premium</h3>
+        <p class="text-gray-600">Bahan ringan, breathable, dan elastis. Tidak menerawang, cepat kering, adem saat dipakai.</p>
+       </div>
       </div>
-      <h3 class="font-semibold text-sm mb-2">Material Premium</h3>
-      <p class="text-xs text-gray-500">Ringan, breathable, tidak menerawang</p>
      </div>
 
-     <div class="reveal text-center p-5" style="animation-delay: 0.2s;">
-      <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-       <i data-lucide="store" class="w-5 h-5 text-white"></i>
+     {{-- Feature 3 --}}
+     <div class="reveal bg-white rounded-3xl p-8 shadow-sm border border-gray-100" style="animation-delay: 0.2s;">
+      <div class="flex items-start gap-5">
+       <span class="text-5xl font-heading font-800 text-gray-200">03</span>
+       <div>
+        <h3 class="font-heading font-700 text-xl mb-2">Terpercaya & Mudah Didapatkan</h3>
+        <p class="text-gray-600">Tersedia di Shopee, Tokopedia, dan Lazada. Belanja mudah, cepat, dan aman.</p>
+       </div>
       </div>
-      <h3 class="font-semibold text-sm mb-2">Mudah Didapat</h3>
-      <p class="text-xs text-gray-500">Tersedia di Shopee, Tokopedia, Lazada</p>
      </div>
 
-     <div class="reveal text-center p-5" style="animation-delay: 0.3s;">
-      <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mx-auto mb-4">
-       <i data-lucide="shield-check" class="w-5 h-5 text-white"></i>
+     {{-- Feature 4 --}}
+     <div class="reveal bg-white rounded-3xl p-8 shadow-sm border border-gray-100" style="animation-delay: 0.3s;">
+      <div class="flex items-start gap-5">
+       <span class="text-5xl font-heading font-800 text-gray-200">04</span>
+       <div>
+        <h3 class="font-heading font-700 text-xl mb-2">QC Ketat</h3>
+        <p class="text-gray-600">Setiap produk melewati proses Quality Control ketat sebelum sampai ke tanganmu.</p>
+       </div>
       </div>
-      <h3 class="font-semibold text-sm mb-2">QC Ketat</h3>
-      <p class="text-xs text-gray-500">Quality control sebelum pengiriman</p>
      </div>
     </div>
    </div>

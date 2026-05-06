@@ -13,18 +13,10 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create admin user
+            // Create admin user
         User::firstOrCreate(
             ['name' => 'admin'],
             ['password' => Hash::make('password'), 'role' => 'admin']
         );
-
-        // Run seeders in order
-        $this->call([
-            CategorySeeder::class,
-            SizeSeeder::class,
-            ProductSeeder::class,
-            InventorySeeder::class,
-        ]);
     }
 }

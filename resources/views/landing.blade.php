@@ -48,11 +48,11 @@
       </div>
       
       <h1 class="reveal font-heading font-800 text-5xl md:text-7xl leading-[1.05] tracking-tight mb-6">
-       Apparel yang<br><span class="italic text-gray-600">Bikin Beda.</span>
+       Gerak Bebas<br><span class="italic text-gray-600">Tetep Stylish</span>
       </h1>
       
       <p class="reveal text-gray-600 text-lg md:text-xl max-w-md leading-relaxed mb-8">
-       Desain 100% original. Print tahan 100+ cuci. Gak bakal ketemu orang pakai baju samaan.
+       Bebaskan setiap gerakanmu tanpa kompromi. Tunik olahraga motif KOC hadir untuk wanita aktif yang ingin tampil percaya diri.
       </p>
 
       {{-- Two Clear Paths --}}
@@ -307,32 +307,65 @@
 
   {{-- WHY CHOOSE US --}}
   <section id="keunggulan" class="py-20 bg-white">
-   <div class="max-w-5xl mx-auto px-6">
-    <div class="reveal text-center mb-12">
+   <div class="max-w-6xl mx-auto px-6">
+    <div class="reveal text-center mb-16">
      <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">Why Us</span>
-     <h2 class="font-heading font-800 text-3xl md:text-4xl mt-2">Kenapa Pilih Kami?</h2>
-     <p class="text-gray-600 mt-3 max-w-lg mx-auto">Bukan sekadar baju. Ini investasi untuk brand dan identitas Anda.</p>
+     <h2 class="font-heading font-800 text-3xl md:text-4xl mt-2">Kenapa Memilih Kami?</h2>
+     <p class="text-gray-600 mt-3 max-w-xl mx-auto">Tunik olahraga dengan kualitas premium untuk wanita aktif Indonesia</p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-     @php
-      $features = [
-       ['icon' => 'pen-tool', 'title' => 'Desain Original', 'desc' => '100% desain sendiri, anti pasaran'],
-       ['icon' => 'printer', 'title' => 'Premium Print', 'desc' => 'DTG & Sublim tahan 100+ cuci'],
-       ['icon' => 'shield', 'title' => 'QC Ketat', 'desc' => 'Cek kualitas sebelum kirim'],
-       ['icon' => 'zap', 'title' => 'Proses Cepat', 'desc' => 'PO 7-14 hari kerja'],
-      ];
-     @endphp
-
-     @foreach($features as $i => $f)
-      <div class="reveal bg-gray-50 rounded-2xl p-6 hover:bg-gray-100 transition-colors" style="animation-delay: {{ $i * 0.1 }}s;">
-       <div class="w-12 h-12 bg-gray-900 rounded-xl flex items-center justify-center mb-4">
-        <i data-lucide="{{ $f['icon'] }}" class="w-5 h-5 text-white"></i>
-       </div>
-       <h3 class="font-semibold mb-1">{{ $f['title'] }}</h3>
-       <p class="text-sm text-gray-500">{{ $f['desc'] }}</p>
+    <div class="grid md:grid-cols-2 gap-6">
+     {{-- Feature 1: Desain Eksklusif --}}
+     <div class="reveal flex gap-5 bg-gray-50 rounded-2xl p-6">
+      <div class="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
+       <i data-lucide="sparkles" class="w-6 h-6 text-white"></i>
       </div>
-     @endforeach
+      <div>
+       <h3 class="font-heading font-700 text-xl mb-2">Desain Motif Eksklusif KOC</h3>
+       <p class="text-sm text-gray-600 leading-relaxed">
+        Setiap tunik KOC hadir dengan motif unik berkarakter khas brand. Tidak hanya nyaman, tapi juga membuatmu tampil stylish dan percaya diri. Kami memahami setiap wanita berbeda, sehingga tunik KOC hadir dalam beberapa motif warna trendi dan ukuran yang pas.
+       </p>
+      </div>
+     </div>
+
+     {{-- Feature 2: Material Premium --}}
+     <div class="reveal flex gap-5 bg-gray-50 rounded-2xl p-6" style="animation-delay: 0.1s;">
+      <div class="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
+       <i data-lucide="gem" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+       <h3 class="font-heading font-700 text-xl mb-2">Kualitas Material Premium</h3>
+       <p class="text-sm text-gray-600 leading-relaxed">
+        Tunik olahraga KOC dibuat dari bahan berkualitas tinggi yang ringan, breathable, dan elastis. Bahan tidak menerawang, cepat kering, dan adem saat dipakai. Gerakan apapun tetap nyaman tanpa batas, fokus pada olahraga dan gaya.
+       </p>
+      </div>
+     </div>
+
+     {{-- Feature 3: Terpercaya & Mudah Didapat --}}
+     <div class="reveal flex gap-5 bg-gray-50 rounded-2xl p-6" style="animation-delay: 0.2s;">
+      <div class="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
+       <i data-lucide="store" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+       <h3 class="font-heading font-700 text-xl mb-2">Terpercaya & Mudah Didapatkan</h3>
+       <p class="text-sm text-gray-600 leading-relaxed">
+        Tunik KOC sudah tersedia di marketplace terpercaya seperti Shopee, Tokopedia, dan Lazada. Belanja mudah, cepat, dan aman dengan sistem pembayaran yang terjamin.
+       </p>
+      </div>
+     </div>
+
+     {{-- Feature 4: QC Ketat --}}
+     <div class="reveal flex gap-5 bg-gray-50 rounded-2xl p-6" style="animation-delay: 0.3s;">
+      <div class="w-14 h-14 bg-gray-900 rounded-xl flex items-center justify-center flex-shrink-0">
+       <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
+      </div>
+      <div>
+       <h3 class="font-heading font-700 text-xl mb-2">QC Ketat – Kualitas yang Bisa Kamu Andalkan</h3>
+       <p class="text-sm text-gray-600 leading-relaxed">
+        Di KOC, setiap tunik olahraga melewati proses Quality Control (QC) yang ketat sebelum sampai ke tanganmu. Pastikan kamu mendapatkan produk terbaik tanpa cacat produksi.
+       </p>
+      </div>
+     </div>
     </div>
    </div>
   </section>
